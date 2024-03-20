@@ -1,3 +1,4 @@
+import Subcategories from "./Subcategories";
 import "./Products.css";
 
 export default function Products() {
@@ -9,10 +10,12 @@ export default function Products() {
           <label>Electric Motors</label>
           <input type="checkbox" />
         </div>
+        <Subcategories />
         <div className="checkbox-item">
           <label>Communication Equipment</label>
           <input type="checkbox" />
         </div>
+        <Subcategories />
       </div>
     </div>
   );
