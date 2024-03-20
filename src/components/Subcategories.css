@@ -1,0 +1,18 @@
+.subcategory-section {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  background-color: var(--primary-color);
+  color: var(--heading-color);
+}
+
+.subcategory-section h4 {
+  margin-top: 10px;
+  text-align: center;
+}
+
+.subcategory-list {
+  margin: 10px;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
