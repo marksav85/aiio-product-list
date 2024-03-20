@@ -7,6 +7,7 @@
   --primary-color: #444;
   --highlight-color: #d13267;
   --bg-color: #f4f4f4;
+  --secondary-color: #9c9c9c;
 }
 
 /* base styles */
@@ -51,15 +52,6 @@ ul {
   background-color: var(--primary-color);
 }
 
-/* forms */
-label {
-  display: block;
-  margin: 24px auto;
-}
-label span {
-  display: block;
-  margin-bottom: 6px;
-}
 .error {
   color: red;
   background: pink;
@@ -76,12 +68,6 @@ label span {
 }
 
 @media screen and (max-width: 375px) {
-  label {
-    margin: 12px auto;
-  }
-  textarea {
-    min-height: 80px;
-  }
   .App .container {
     padding: 0 20px;
   }
