@@ -1,0 +1,40 @@
+.subproduct-section {
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  background-color: var(--secondary-color);
+  color: var(--heading-color);
+}
+
+.subproduct-section h5 {
+  margin-top: 10px;
+  text-align: center;
+}
+
+.subproduct-list {
+  margin: 0 20px 20px 20px;
+  padding: 20px;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+.subproduct-menu {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.subproduct-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin: 10px 0;
+  padding: 10px;
+}
+
+.subproduct-menu input {
+  margin-left: auto;
+}
