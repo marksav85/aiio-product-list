@@ -4,7 +4,7 @@ import "./Subcategories.css"; // Import CSS file for styling
 
 // Define the JSON data for subcategories
 const categoryData = {
-  subcatergories: [
+  subcategories: [
     { productId: 1, subCategoryId: 1, subCategoryName: "Bearings" },
     { productId: 1, subCategoryId: 2, subCategoryName: "Current Collectors" },
     {
@@ -14,19 +14,23 @@ const categoryData = {
     },
     { productId: 1, subCategoryId: 4, subCategoryName: "Insulators" },
     { productId: 1, subCategoryId: 5, subCategoryName: "Rotars and Stators" },
-    { productId: 2, subCategoryId: 6, subCategoryName: "Bearings" },
-    { productId: 2, subCategoryId: 7, subCategoryName: "Current Collectors" },
+    { productId: 2, subCategoryId: 6, subCategoryName: "Lager" },
+    { productId: 2, subCategoryId: 7, subCategoryName: "Stromkollektoren" },
     {
       productId: 2,
       subCategoryId: 8,
-      subCategoryName: "Fans and Fan impellers",
+      subCategoryName: "Lüfter und Lüfterflügel",
     },
-    { productId: 2, subCategoryId: 9, subCategoryName: "Insulators" },
-    { productId: 2, subCategoryId: 10, subCategoryName: "Rotars and Stators" },
+    { productId: 2, subCategoryId: 9, subCategoryName: "Isolatoren" },
+    {
+      productId: 2,
+      subCategoryId: 10,
+      subCategoryName: "Rotoren und Stator",
+    },
   ],
 };
 
-export default function Subcategories() {
+export default function Subcategories({ productId }) {
   // State to keep track of checked status for each subcategory
   const [categoryItems, setcategoryItems] = useState({});
 
@@ -37,9 +41,12 @@ export default function Subcategories() {
       ...categoryItems,
       [subCategoryId]: !categoryItems[subCategoryId],
     });
-    // Log the updated categoryItems state
-    console.log(categoryItems);
   };
+
+  // Filter subcategories based on productId
+  const filteredSubcategories = categoryData.subcategories.filter(
+    (subCategory) => subCategory.productId === productId
+  );
 
   return (
     <div className="subcategory-section">
@@ -48,7 +55,7 @@ export default function Subcategories() {
       {/* Container for subcategory list */}
       <div className="subcategory-list">
         {/* Map through subcategories and render each subcategory */}
-        {categoryData.subcatergories.map((subCategory) => (
+        {filteredSubcategories.map((subCategory) => (
           <div className="subcategory-menu" key={subCategory.subCategoryId}>
             {/* Individual subcategory item */}
             <div className="subcategory-item">
