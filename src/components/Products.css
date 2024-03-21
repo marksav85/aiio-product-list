@@ -29,3 +29,10 @@
 .product-menu input {
   margin-left: auto;
 }
+
+.product-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 10px;
+}
