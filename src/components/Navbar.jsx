@@ -1,6 +1,6 @@
 import "./Navbar.css";
 
-export default function Navbar() {
+export default function Navbar({ toggleModal }) {
   return (
     <div className="navbar">
       <ul>
@@ -9,7 +9,10 @@ export default function Navbar() {
         </li>
 
         <li>
-          <button className="btn">Done</button>
+          {/* Button to toggle modal visibility */}
+          <button className="btn" onClick={toggleModal}>
+            Done
+          </button>
         </li>
       </ul>
     </div>
