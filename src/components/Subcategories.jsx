@@ -33,6 +33,8 @@ const categoryData = {
 export default function Subcategories({ productId }) {
   // State to keep track of checked status for each subcategory
   const [categoryItems, setcategoryItems] = useState({});
+  // State to keep track of search text
+  const [searchText, setSearchText] = useState("");
 
   // Function to handle checkbox changes for each subcategory
   const handleCategoryChange = (subCategoryId) => {
@@ -48,14 +50,30 @@ export default function Subcategories({ productId }) {
     (subCategory) => subCategory.productId === productId
   );
 
+  // Filter subcategories based on search text
+  const searchFilteredSubcategories = filteredSubcategories.filter(
+    (subCategory) =>
+      subCategory.subCategoryName
+        .toLowerCase()
+        .includes(searchText.toLowerCase())
+  );
+
   return (
     <div className="subcategory-section">
       {/* Subcategory title */}
       <h4 className="subcategory-title">Select subcategories</h4>
       {/* Container for subcategory list */}
       <div className="subcategory-list">
-        {/* Map through subcategories and render each subcategory */}
-        {filteredSubcategories.map((subCategory) => (
+        {/* Search bar */}
+        <input
+          className="search-bar"
+          type="text"
+          placeholder="Search subcategories"
+          value={searchText}
+          onChange={(e) => setSearchText(e.target.value)}
+        />
+        {/* Map through searched subcategories and render each subcategory */}
+        {searchFilteredSubcategories.map((subCategory) => (
           <div className="subcategory-menu" key={subCategory.subCategoryId}>
             {/* Individual subcategory item */}
             <div className="subcategory-item">
