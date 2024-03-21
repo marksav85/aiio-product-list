@@ -1,18 +1,20 @@
 import { useState } from "react";
-import Subcategories from "./Subcategories"; // Import Subcategories component
-import "./Products.css"; // Import CSS file for styling
-
-// Define the JSON data for products
-const productsData = {
-  products: [
-    { productId: 1, productName: "Electric Motors" },
-    { productId: 2, productName: "Communication Equipment" },
-  ],
-};
+// Import Subcategories component
+import Subcategories from "./Subcategories";
+// Import context hook for managing checked products
+import { useCheckedProducts } from "../context/CheckedProductsContext";
+// Import JSON database
+import db from "../assets/json_data/db";
+// Import CSS
+import "./Products.css";
 
 export default function Products() {
+  // Get the JSON data for products
+  const productsData = db;
   // State to keep track of checked status for each product
   const [productItems, setproductItems] = useState({});
+  // State to hold the checked products
+  const { checkedProducts, setCheckedProducts } = useCheckedProducts();
 
   // Function to handle checkbox changes for each product
   const handleProductChange = (productId) => {
@@ -21,8 +23,18 @@ export default function Products() {
       ...productItems,
       [productId]: !productItems[productId],
     });
-    // Log the updated productItems state
-    console.log(productItems);
+  };
+
+  // Function to handle click event on "Add Product" button
+  const handleAddProduct = () => {
+    // Filter checked products and get their IDs
+    const checkedProductIds = Object.keys(productItems).filter(
+      (productId) => productItems[productId]
+    );
+    // Update the state with the checked product IDs using the context function
+    setCheckedProducts(checkedProductIds);
+    // Pass the array of checked product IDs to another component
+    console.log("Checked Products:", checkedProductIds);
   };
 
   return (
@@ -53,6 +65,12 @@ export default function Products() {
             )}
           </div>
         ))}
+      </div>
+      {/* Add Product button */}
+      <div className="product-btn">
+        <button className="btn" onClick={handleAddProduct}>
+          Add Product
+        </button>
       </div>
     </div>
   );
