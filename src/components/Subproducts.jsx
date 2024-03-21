@@ -1,45 +1,20 @@
 import { useState } from "react";
-import "./Subproducts.css"; // Import CSS file for styling
-
-// Define the JSON data for subproducts
-const subproductData = {
-  subproducts: [
-    { subCategoryId: 1, subProductId: 1, subProductName: "Blue Collectors" },
-    { subCategoryId: 1, subProductId: 2, subProductName: "Red Collectors" },
-    { subCategoryId: 2, subProductId: 3, subProductName: "Yellow Collectors" },
-    { subCategoryId: 2, subProductId: 4, subProductName: "White Collectors" },
-    { subCategoryId: 3, subProductId: 5, subProductName: "Black Collectors" },
-    { subCategoryId: 3, subProductId: 6, subProductName: "Green Collectors" },
-    { subCategoryId: 4, subProductId: 7, subProductName: "Orange Collectors" },
-    { subCategoryId: 4, subProductId: 8, subProductName: "Purple Collectors" },
-    { subCategoryId: 5, subProductId: 9, subProductName: "Wheat Collectors" },
-    {
-      subCategoryId: 5,
-      subProductId: 10,
-      subProductName: "Current Collectors",
-    },
-    { subCategoryId: 6, subProductId: 11, subProductName: "Blaue Sammler" },
-    { subCategoryId: 6, subProductId: 12, subProductName: "Rote Sammler" },
-    { subCategoryId: 7, subProductId: 13, subProductName: "Gelbe Sammler" },
-    { subCategoryId: 7, subProductId: 14, subProductName: "Weiße Sammler" },
-    { subCategoryId: 8, subProductId: 15, subProductName: "Schwarze Sammler" },
-    { subCategoryId: 8, subProductId: 16, subProductName: "Grüne Sammler" },
-    {
-      subCategoryId: 9,
-      subProductId: 17,
-      subProductName: "Orangefarbene Sammler",
-    },
-    { subCategoryId: 9, subProductId: 18, subProductName: "Lila Sammler" },
-    { subCategoryId: 10, subProductId: 19, subProductName: "Weizen Sammler" },
-    { subCategoryId: 10, subProductId: 20, subProductName: "Stromsammler" },
-  ],
-};
+// Import context hook for managing checked products
+import { useCheckedProducts } from "../context/CheckedProductsContext";
+// Import JSON database
+import db from "../assets/json_data/db";
+// Import CSS file for styling
+import "./Subproducts.css";
 
 export default function Subproducts({ subCategoryId }) {
+  // Get the JSON data for products
+  const productsData = db;
   // State to keep track of checked status for each subproduct
   const [subproductItems, setsubproductItems] = useState({});
   // State to keep track of search text
   const [searchText, setSearchText] = useState("");
+  // State to hold the checked subproducts
+  const { checkedSubproducts, setCheckedSubproducts } = useCheckedProducts();
 
   // Function to handle checkbox changes for each subproduct
   const handleSubproductChange = (subProductId) => {
@@ -50,8 +25,20 @@ export default function Subproducts({ subCategoryId }) {
     });
   };
 
-  // Filter subproducts based on subcategoryId
-  const filteredSubproducts = subproductData.subproducts.filter(
+  // Function to handle click event on "Add Sub-Product" button
+  const handleAddSubproduct = () => {
+    // Filter checked subproducts and get their IDs
+    const checkedSubproductIds = Object.keys(subproductItems).filter(
+      (subproductId) => subproductItems[subproductId]
+    );
+    // Update the state with the checked subproduct IDs using the context function
+    setCheckedSubproducts(checkedSubproductIds);
+    // Pass the array of checked subproduct IDs to another component
+    console.log("Checked Subproducts:", checkedSubproductIds);
+  };
+
+  // Filter subproducts based on subCategoryId
+  const filteredSubproducts = productsData.subproducts.filter(
     (subProduct) => subProduct.subCategoryId === subCategoryId
   );
 
@@ -92,6 +79,11 @@ export default function Subproducts({ subCategoryId }) {
             </div>
           </div>
         ))}
+      </div>
+      <div className="product-btn">
+        <button className="btn" onClick={handleAddSubproduct}>
+          Add Subproduct
+        </button>
       </div>
     </div>
   );
