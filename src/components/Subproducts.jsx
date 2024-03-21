@@ -18,24 +18,24 @@ const subproductData = {
       subProductId: 10,
       subProductName: "Current Collectors",
     },
-    { subCategoryId: 6, subProductId: 11, subProductName: "Blue Collectors" },
-    { subCategoryId: 6, subProductId: 12, subProductName: "Red Collectors" },
-    { subCategoryId: 7, subProductId: 13, subProductName: "Yellow Collectors" },
-    { subCategoryId: 7, subProductId: 14, subProductName: "White Collectors" },
-    { subCategoryId: 8, subProductId: 15, subProductName: "Black Collectors" },
-    { subCategoryId: 8, subProductId: 16, subProductName: "Green Collectors" },
-    { subCategoryId: 9, subProductId: 17, subProductName: "Orange Collectors" },
-    { subCategoryId: 9, subProductId: 18, subProductName: "Purple Collectors" },
-    { subCategoryId: 10, subProductId: 19, subProductName: "Wheat Collectors" },
+    { subCategoryId: 6, subProductId: 11, subProductName: "Blaue Sammler" },
+    { subCategoryId: 6, subProductId: 12, subProductName: "Rote Sammler" },
+    { subCategoryId: 7, subProductId: 13, subProductName: "Gelbe Sammler" },
+    { subCategoryId: 7, subProductId: 14, subProductName: "Weiße Sammler" },
+    { subCategoryId: 8, subProductId: 15, subProductName: "Schwarze Sammler" },
+    { subCategoryId: 8, subProductId: 16, subProductName: "Grüne Sammler" },
     {
-      subCategoryId: 10,
-      subProductId: 20,
-      subProductName: "Current Collectors",
+      subCategoryId: 9,
+      subProductId: 17,
+      subProductName: "Orangefarbene Sammler",
     },
+    { subCategoryId: 9, subProductId: 18, subProductName: "Lila Sammler" },
+    { subCategoryId: 10, subProductId: 19, subProductName: "Weizen Sammler" },
+    { subCategoryId: 10, subProductId: 20, subProductName: "Stromsammler" },
   ],
 };
 
-export default function Subproducts() {
+export default function Subproducts({ subCategoryId }) {
   // State to keep track of checked status for each subproduct
   const [subproductItems, setsubproductItems] = useState({});
 
@@ -46,9 +46,12 @@ export default function Subproducts() {
       ...subproductItems,
       [subProductId]: !subproductItems[subProductId],
     });
-    // Log the updated subproductItems state
-    console.log(subproductItems);
   };
+
+  // Filter subproducts based on subcategoryId
+  const filteredSubproducts = subproductData.subproducts.filter(
+    (subProduct) => subProduct.subCategoryId === subCategoryId
+  );
 
   return (
     <div className="subproduct-section">
@@ -57,7 +60,7 @@ export default function Subproducts() {
       {/* Container for subproduct list */}
       <div className="subproduct-list">
         {/* Map through subproducts and render each subproduct */}
-        {subproductData.subproducts.map((subproduct) => (
+        {filteredSubproducts.map((subproduct) => (
           <div className="subproduct-menu" key={subproduct.subProductId}>
             {/* Individual subproduct item */}
             <div className="subproduct-item">
