@@ -2,6 +2,7 @@ import { useState } from "react";
 import Products from "./components/Products";
 import Navbar from "./components/Navbar";
 import Modalbox from "./components/Modalbox";
+import { CheckedProductsProvider } from "./context/CheckedProductsContext";
 
 import "./App.css";
 
@@ -15,12 +16,14 @@ function App() {
   };
 
   return (
-    <div className="App">
-      <Navbar toggleModal={toggleModal} />
-      <Products />
-      {/* Render Modal component if modalVisible is true */}
-      {modalVisible && <Modalbox closeModal={toggleModal} />}
-    </div>
+    <CheckedProductsProvider>
+      <div className="App">
+        <Navbar toggleModal={toggleModal} />
+        <Products />
+        {/* Render Modal component if modalVisible is true */}
+        {modalVisible && <Modalbox closeModal={toggleModal} />}
+      </div>
+    </CheckedProductsProvider>
   );
 }
 
