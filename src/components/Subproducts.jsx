@@ -38,6 +38,8 @@ const subproductData = {
 export default function Subproducts({ subCategoryId }) {
   // State to keep track of checked status for each subproduct
   const [subproductItems, setsubproductItems] = useState({});
+  // State to keep track of search text
+  const [searchText, setSearchText] = useState("");
 
   // Function to handle checkbox changes for each subproduct
   const handleSubproductChange = (subProductId) => {
@@ -53,14 +55,27 @@ export default function Subproducts({ subCategoryId }) {
     (subProduct) => subProduct.subCategoryId === subCategoryId
   );
 
+  // Filter subproducts based on search text
+  const searchFilteredSubproducts = filteredSubproducts.filter((subProduct) =>
+    subProduct.subProductName.toLowerCase().includes(searchText.toLowerCase())
+  );
+
   return (
     <div className="subproduct-section">
       {/* Subproduct title */}
       <h5 className="subproduct-title">Select subproducts</h5>
       {/* Container for subproduct list */}
       <div className="subproduct-list">
-        {/* Map through subproducts and render each subproduct */}
-        {filteredSubproducts.map((subproduct) => (
+        {/* Search bar */}
+        <input
+          className="search-bar"
+          type="text"
+          placeholder="Search subproducts"
+          value={searchText}
+          onChange={(e) => setSearchText(e.target.value)}
+        />
+        {/* Map through searched subproducts and render each subproduct */}
+        {searchFilteredSubproducts.map((subproduct) => (
           <div className="subproduct-menu" key={subproduct.subProductId}>
             {/* Individual subproduct item */}
             <div className="subproduct-item">
