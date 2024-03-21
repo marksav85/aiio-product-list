@@ -1,40 +1,23 @@
 import { useState } from "react";
-import Subproducts from "./Subproducts"; // Import Subproducts component
-import "./Subcategories.css"; // Import CSS file for styling
-
-// Define the JSON data for subcategories
-const categoryData = {
-  subcategories: [
-    { productId: 1, subCategoryId: 1, subCategoryName: "Bearings" },
-    { productId: 1, subCategoryId: 2, subCategoryName: "Current Collectors" },
-    {
-      productId: 1,
-      subCategoryId: 3,
-      subCategoryName: "Fans and Fan impellers",
-    },
-    { productId: 1, subCategoryId: 4, subCategoryName: "Insulators" },
-    { productId: 1, subCategoryId: 5, subCategoryName: "Rotars and Stators" },
-    { productId: 2, subCategoryId: 6, subCategoryName: "Lager" },
-    { productId: 2, subCategoryId: 7, subCategoryName: "Stromkollektoren" },
-    {
-      productId: 2,
-      subCategoryId: 8,
-      subCategoryName: "Lüfter und Lüfterflügel",
-    },
-    { productId: 2, subCategoryId: 9, subCategoryName: "Isolatoren" },
-    {
-      productId: 2,
-      subCategoryId: 10,
-      subCategoryName: "Rotoren und Stator",
-    },
-  ],
-};
+// Import Subproducts component
+import Subproducts from "./Subproducts";
+// Import context hook for managing checked products
+import { useCheckedProducts } from "../context/CheckedProductsContext";
+// Import JSON database
+import db from "../assets/json_data/db";
+// Import CSS
+import "./Subcategories.css";
 
 export default function Subcategories({ productId }) {
+  // Get the JSON data for products
+  const productsData = db;
   // State to keep track of checked status for each subcategory
   const [categoryItems, setcategoryItems] = useState({});
   // State to keep track of search text
   const [searchText, setSearchText] = useState("");
+  // State to hold the checked categories
+  const { checkedSubcategories, setCheckedSubcategories } =
+    useCheckedProducts();
 
   // Function to handle checkbox changes for each subcategory
   const handleCategoryChange = (subCategoryId) => {
@@ -45,8 +28,20 @@ export default function Subcategories({ productId }) {
     });
   };
 
+  // Function to handle click event on "Add Category" button
+  const handleAddSubcategory = () => {
+    // Filter checked categories and get their IDs
+    const checkedsubCategoryIds = Object.keys(categoryItems).filter(
+      (subCategoryId) => categoryItems[subCategoryId]
+    );
+    // Update the state with the checked category IDs using the context function
+    setCheckedSubcategories(checkedsubCategoryIds);
+    // Pass the array of checked category IDs to another component
+    console.log("Checked Subcategories:", checkedsubCategoryIds);
+  };
+
   // Filter subcategories based on productId
-  const filteredSubcategories = categoryData.subcategories.filter(
+  const filteredSubcategories = productsData.subcategories.filter(
     (subCategory) => subCategory.productId === productId
   );
 
@@ -94,6 +89,11 @@ export default function Subcategories({ productId }) {
             )}
           </div>
         ))}
+      </div>
+      <div className="product-btn">
+        <button className="btn" onClick={handleAddSubcategory}>
+          Add Subcategory
+        </button>
       </div>
     </div>
   );
