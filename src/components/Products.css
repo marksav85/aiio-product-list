@@ -20,6 +20,7 @@
   color: var(--text-color);
   margin-top: 10px;
   padding: 10px;
+  border-radius: 5px;
 }
 
 .product-menu {
@@ -34,12 +35,17 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
+  width: 80%;
   margin: 10px 0;
   padding: 10px;
 }
 
-.product-menu input {
+.product-item label {
+  font-size: 1.5rem;
+}
+
+.product-item input {
+  transform: scale(2);
   margin-left: auto;
 }
 

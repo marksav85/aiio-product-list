@@ -1,5 +1,5 @@
 .App {
-  padding: 0 60px;
+  padding: 20px 60px;
   background-color: #00a9d5;
   color: #fff;
   min-height: 100vh;
@@ -7,16 +7,22 @@
 
 .App .container {
   flex-grow: 1;
-  padding: 0 60px;
+  padding: 20px 60px;
 }
 
 @media screen and (max-width: 768px) {
+  .App {
+    padding: 20px 20px;
+  }
   .App .container {
     padding: 0 20px;
   }
 }
 
 @media screen and (max-width: 375px) {
+  .App {
+    padding: 20px 10px;
+  }
   .App .container {
     padding: 0 10px;
   }
