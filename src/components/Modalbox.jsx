@@ -23,11 +23,42 @@ export default function Modalbox({ closeModal }) {
 
   // Update modal display data when checked items change
   useEffect(() => {
-    setModalProducts(checkedProducts);
-    setModalSubcategories(checkedSubcategories);
-    setModalSubproducts(checkedSubproducts);
-    console.log("Modal:", checkedProducts);
-  }, [checkedProducts, checkedSubcategories, checkedSubproducts]);
+    setModalProducts(
+      checkedProducts.map((productIdString) => {
+        const productId = parseInt(productIdString, 10);
+        const product = productsData.products.find(
+          (prod) => prod.productId === productId
+        );
+        return product ? product.productName : "Product not found";
+      })
+    );
+  }, [checkedProducts, productsData.products]);
+
+  useEffect(() => {
+    setModalSubcategories(
+      checkedSubcategories.map((subcategoryIdString) => {
+        const subcategoryId = parseInt(subcategoryIdString, 10);
+        const subcategory = productsData.subcategories.find(
+          (subcat) => subcat.subCategoryId === subcategoryId
+        );
+        return subcategory
+          ? subcategory.subCategoryName
+          : "Subcategory not found";
+      })
+    );
+  }, [checkedSubcategories, productsData.subcategories]);
+
+  useEffect(() => {
+    setModalSubproducts(
+      checkedSubproducts.map((subproductIdString) => {
+        const subproductId = parseInt(subproductIdString, 10);
+        const subproduct = productsData.subproducts.find(
+          (subprod) => subprod.subProductId === subproductId
+        );
+        return subproduct ? subproduct.subProductName : "Subproduct not found";
+      })
+    );
+  }, [checkedSubproducts, productsData.subproducts]);
 
   // Close modal when clicking outside
   useEffect(() => {
@@ -46,67 +77,45 @@ export default function Modalbox({ closeModal }) {
   return (
     <div className="modal">
       <div className="modal-content">
-        <div>
+        <div className="modal-products">
           <h4>Products:</h4>
           {/* Display added products */}
-          {modalProducts.map((productIdString) => {
-            // Parse the productId from the string
-            const productId = parseInt(productIdString, 10);
-            // Find the product object with the matching productId
-            const product = productsData.products.find(
-              (prod) => prod.productId === productId
-            );
-            // Display its name if exists
-            if (product) {
-              return <p key={productId}>{product.productName}</p>;
-            } else {
-              // Display error if not exist
-              return <p key={productId}>Product not found</p>;
-            }
-          })}
+          {modalProducts.length > 0 ? (
+            modalProducts.map((productName, index) => (
+              <p key={index}>{productName}</p>
+            ))
+          ) : (
+            <p>No products selected</p>
+          )}
         </div>
-        <div>
+        <div className="modal-subcategories">
           <h4>SubCategories:</h4>
           {/* Display added subcategories */}
-          {modalSubcategories.map((subcategoryIdString) => {
-            // Parse the subcategoryId from the string
-            const subcategoryId = parseInt(subcategoryIdString, 10);
-            // Find the subcategory object with the matching subcategoryId
-            const subcategory = productsData.subcategories.find(
-              (subcat) => subcat.subcategoryId === subcategoryId
-            );
-            // Display its name if exists
-            if (subcategory) {
-              return <p key={subcategoryId}>{subcategory.subCategoryName}</p>;
-            } else {
-              // Display error if not exist
-              return <p key={subcategoryId}>Subcategory not found</p>;
-            }
-          })}
+          {modalSubcategories.length > 0 ? (
+            modalSubcategories.map((subCategoryName, index) => (
+              <p key={index}>{subCategoryName}</p>
+            ))
+          ) : (
+            <p>No sub-categories selected</p>
+          )}
         </div>
-        <div>
+        <div className="modal-subproducts">
           <h4>SubProducts:</h4>
           {/* Display added subproducts */}
-          {modalSubproducts.map((subproductIdString) => {
-            // Parse the subproductId from the string
-            const subproductId = parseInt(subproductIdString, 10);
-            // Find the subproduct object with the matching subproductId
-            const subproduct = productsData.subproducts.find(
-              (subprod) => subprod.subProductId === subproductId
-            );
-            // Display its name if exists
-            if (subproduct) {
-              return <p key={subproductId}>{subproduct.subProductName}</p>;
-            } else {
-              // Display error if not exist
-              return <p key={subproductId}>Subproduct not found</p>;
-            }
-          })}
+          {modalSubproducts.length > 0 ? (
+            modalSubproducts.map((subProductName, index) => (
+              <p key={index}>{subProductName}</p>
+            ))
+          ) : (
+            <p>No sub-products selected</p>
+          )}
         </div>
         {/* Close modal */}
-        <span className="close" onClick={closeModal}>
-          Close
-        </span>
+        <div className="modal-btn">
+          <button className="close btn" onClick={closeModal}>
+            Close
+          </button>
+        </div>
       </div>
     </div>
   );
