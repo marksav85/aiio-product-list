@@ -44,7 +44,6 @@ export default function Subcategories({ productId }) {
     // Update the state with the checked category IDs using the context function
     setCheckedSubcategories(checkedsubCategoryIds);
     // Pass the array of checked category IDs to another component
-    console.log("Checked Subcategories:", checkedsubCategoryIds);
   };
 
   // Filter subcategories based on productId
