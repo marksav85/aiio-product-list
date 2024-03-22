@@ -6,15 +6,13 @@ import db from "../assets/json_data/db";
 // Import CSS
 import "./Modalbox.css";
 
-export default function Modalbox({ closeModal }) {
+export default function Modalbox({ saveModal }) {
   // Get the JSON data for products
   const productsData = db;
 
   // Retrieve checked products, subcategories, and subproducts using context hook
-  const { checkedProducts, setCheckedProducts } = useCheckedProducts();
-  const { checkedSubcategories, setCheckedSubcategories } =
+  const { checkedProducts, checkedSubcategories, checkedSubproducts } =
     useCheckedProducts();
-  const { checkedSubproducts, setCheckedSubproducts } = useCheckedProducts();
 
   // State variables to store modal display data
   const [modalProducts, setModalProducts] = useState([]);
@@ -65,14 +63,16 @@ export default function Modalbox({ closeModal }) {
     const handleClickOutside = (event) => {
       const modal = document.querySelector(".modal");
       if (modal && !modal.contains(event.target)) {
-        closeModal();
+        // Prevent the default behavior of the click event
+        event.preventDefault();
+        event.stopPropagation();
       }
     };
     document.addEventListener("click", handleClickOutside);
     return () => {
       document.removeEventListener("click", handleClickOutside);
     };
-  }, [closeModal]);
+  }, []);
 
   return (
     <div className="modal">
@@ -92,8 +92,8 @@ export default function Modalbox({ closeModal }) {
           <h4>SubCategories:</h4>
           {/* Display added subcategories */}
           {modalSubcategories.length > 0 ? (
-            modalSubcategories.map((subCategoryName, index) => (
-              <p key={index}>{subCategoryName}</p>
+            modalSubcategories.map((subcategory, index) => (
+              <p key={index}>{subcategory}</p>
             ))
           ) : (
             <p>No sub-categories selected</p>
@@ -112,8 +112,8 @@ export default function Modalbox({ closeModal }) {
         </div>
         {/* Close modal */}
         <div className="modal-btn">
-          <button className="close btn" onClick={closeModal}>
-            Close
+          <button className="close btn" onClick={saveModal}>
+            Save
           </button>
         </div>
       </div>
