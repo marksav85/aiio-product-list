@@ -21,7 +21,7 @@ function App() {
         <Navbar toggleModal={toggleModal} />
         <Products />
         {/* Render Modal component if modalVisible is true */}
-        {modalVisible && <Modalbox closeModal={toggleModal} />}
+        {modalVisible && <Modalbox saveModal={toggleModal} />}
       </div>
     </CheckedProductsProvider>
   );
