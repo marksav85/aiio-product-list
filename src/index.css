@@ -34,11 +34,6 @@ ul {
 }
 
 /* layout */
-.page-title {
-  font-size: 1em;
-  color: var(--heading-color);
-  display: inline-block;
-}
 .btn {
   background: #fff;
   padding: 8px 12px;
