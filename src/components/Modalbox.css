@@ -11,4 +11,22 @@
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
   z-index: 9999;
   color: black;
+  font-size: 1.2rem;
+}
+
+.modal-products {
+  margin-top: 0;
+}
+.modal-subcategories {
+  margin-top: 20px;
+}
+
+.modal-subproducts {
+  margin-top: 20px;
+}
+
+.modal-btn {
+  display: flex;
+  align-items: center;
+  justify-content: end;
 }
