@@ -13,6 +13,25 @@
   margin: 10px;
 }
 
+.subcategory-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0px 20px;
+}
+
+.minimize-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0px;
+  cursor: pointer;
+}
+
+.minimize-btn img {
+  margin: 0px;
+}
+
 .subcategory-list {
   display: flex;
   flex-direction: column;
