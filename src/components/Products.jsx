@@ -38,7 +38,7 @@ export default function Products() {
   };
 
   return (
-    <div>
+    <div className="container">
       {/* Page title */}
       <h2 className="page-title">Products</h2>
       {/* Container for product list */}
