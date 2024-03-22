@@ -11,19 +11,24 @@ export const CheckedProductsProvider = ({ children }) => {
   const [checkedProducts, setCheckedProducts] = useState([]);
   const [checkedSubcategories, setCheckedSubcategories] = useState([]);
   const [checkedSubproducts, setCheckedSubproducts] = useState([]);
-  console.log("productContext:", checkedProducts);
-  console.log("subCategoryContext:", checkedSubcategories);
-  console.log("subProductContext:", checkedSubproducts);
+
+  // Function to update state and preserve existing data
+  const updateStateAndPreserveData = (setter, newData) => {
+    setter((prevState) => [...prevState, ...newData]);
+  };
 
   return (
     <CheckedProductsContext.Provider
       value={{
         checkedProducts,
-        setCheckedProducts,
+        setCheckedProducts: (data) =>
+          updateStateAndPreserveData(setCheckedProducts, data),
         checkedSubcategories,
-        setCheckedSubcategories,
+        setCheckedSubcategories: (data) =>
+          updateStateAndPreserveData(setCheckedSubcategories, data),
         checkedSubproducts,
-        setCheckedSubproducts,
+        setCheckedSubproducts: (data) =>
+          updateStateAndPreserveData(setCheckedSubproducts, data),
       }}
     >
       {children}
