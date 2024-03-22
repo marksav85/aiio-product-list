@@ -13,8 +13,14 @@ export default function Subproducts({ subCategoryId }) {
   const [subproductItems, setsubproductItems] = useState({});
   // State to keep track of search text
   const [searchText, setSearchText] = useState("");
+  // State to track visbility of subproduct lists
+  const [showSubproducts, setShowSubproducts] = useState(true);
   // State to hold the checked subproducts
   const { checkedSubproducts, setCheckedSubproducts } = useCheckedProducts();
+
+  const toggleSubproductVisibility = () => {
+    setShowSubproducts(!showSubproducts);
+  };
 
   // Function to handle checkbox changes for each subproduct
   const handleSubproductChange = (subProductId) => {
@@ -49,42 +55,58 @@ export default function Subproducts({ subCategoryId }) {
 
   return (
     <div className="subproduct-section">
-      {/* Subproduct title */}
-      <h5 className="subproduct-title">Select subproducts</h5>
+      <div className="subproduct-header">
+        {/* Subproduct title */}
+        <h5 className="subproduct-title">Select subproducts</h5>
+        <span className="minimize-btn" onClick={toggleSubproductVisibility}>
+          {showSubproducts ? (
+            <img src="icons/subprod-collapse.png" alt="collapse icon" />
+          ) : (
+            <img src="icons/subprod-expand.png" alt="expand icon" />
+          )}
+        </span>
+      </div>
       {/* Container for subproduct list */}
-      <div className="subproduct-list">
-        {/* Search bar */}
-        <input
-          className="search-bar"
-          type="text"
-          placeholder="Search subproducts"
-          value={searchText}
-          onChange={(e) => setSearchText(e.target.value)}
-        />
-        {/* Map through searched subproducts and render each subproduct */}
-        {searchFilteredSubproducts.map((subproduct) => (
-          <div className="subproduct-menu" key={subproduct.subProductId}>
-            {/* Individual subproduct item */}
-            <div className="subproduct-item">
-              {/* Label for subproduct */}
-              <label>{subproduct.subProductName}</label>
-              {/* Checkbox for subproduct */}
-              <input
-                type="checkbox"
-                // Set checked status based on subproductItems state
-                checked={subproductItems[subproduct.subProductId] || false}
-                // Handle checkbox change
-                onChange={() => handleSubproductChange(subproduct.subProductId)}
-              />
+      {showSubproducts && (
+        <div className="subproduct-list">
+          {/* Search bar */}
+          <input
+            className="search-bar"
+            type="text"
+            placeholder="Search subproducts"
+            value={searchText}
+            onChange={(e) => setSearchText(e.target.value)}
+          />
+          {/* Map through searched subproducts and render each subproduct */}
+          {searchFilteredSubproducts.map((subproduct) => (
+            <div className="subproduct-menu" key={subproduct.subProductId}>
+              {/* Individual subproduct item */}
+              <div className="subproduct-item">
+                {/* Label for subproduct */}
+                <label>{subproduct.subProductName}</label>
+                {/* Checkbox for subproduct */}
+                <input
+                  type="checkbox"
+                  // Set checked status based on subproductItems state
+                  checked={subproductItems[subproduct.subProductId] || false}
+                  // Handle checkbox change
+                  onChange={() =>
+                    handleSubproductChange(subproduct.subProductId)
+                  }
+                />
+              </div>
             </div>
-          </div>
-        ))}
-      </div>
-      <div className="product-btn">
-        <button className="btn" onClick={handleAddSubproduct}>
-          Add Subproduct
-        </button>
-      </div>
+          ))}
+        </div>
+      )}
+      {/* Button to add subproducts */}
+      {showSubproducts && (
+        <div className="product-btn">
+          <button className="btn" onClick={handleAddSubproduct}>
+            Add Subproduct
+          </button>
+        </div>
+      )}
     </div>
   );
 }
