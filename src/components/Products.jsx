@@ -34,7 +34,6 @@ export default function Products() {
     // Update the state with the checked product IDs using the context function
     setCheckedProducts(checkedProductIds);
     // Pass the array of checked product IDs to another component
-    console.log("Checked Products:", checkedProductIds);
   };
 
   return (
