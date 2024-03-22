@@ -1,3 +1,16 @@
+.container .page-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.page-title {
+  font-size: 1.5em;
+  font-weight: bold;
+  color: var(--heading-color);
+  display: inline-block;
+}
+
 .product-list {
   display: flex;
   flex-direction: column;
