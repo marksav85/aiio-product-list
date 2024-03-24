@@ -1,14 +1,14 @@
 import { useState, useEffect } from "react";
 // Import context hook for managing checked products
 import { useCheckedProducts } from "../context/CheckedProductsContext";
-// Import JSON database
-import db from "../assets/json_data/db";
+// Import custom hook for fetching products data
+import { useProductsData } from "../hooks/useProductsData";
 // Import CSS
 import "./Modalbox.css";
 
 export default function Modalbox({ saveModal }) {
-  // Get the JSON data for products
-  const productsData = db;
+  const { products, subcategories, subproducts, isLoading, error } =
+    useProductsData();
 
   // Retrieve checked products, subcategories, and subproducts using context hook
   const { checkedProducts, checkedSubcategories, checkedSubproducts } =
@@ -21,42 +21,48 @@ export default function Modalbox({ saveModal }) {
 
   // Update modal display data when checked items change
   useEffect(() => {
-    setModalProducts(
-      checkedProducts.map((productIdString) => {
-        const productId = parseInt(productIdString, 10);
-        const product = productsData.products.find(
-          (prod) => prod.productId === productId
-        );
-        return product ? product.productName : "Product not found";
-      })
-    );
-  }, [checkedProducts, productsData.products]);
+    if (products) {
+      setModalProducts(
+        checkedProducts.map((productIdString) => {
+          const productId = parseInt(productIdString, 10);
+          const product = products.find((prod) => prod.productId === productId);
+          return product ? product.productName : "Product not found";
+        })
+      );
+    }
+  }, [checkedProducts, products]);
 
   useEffect(() => {
-    setModalSubcategories(
-      checkedSubcategories.map((subcategoryIdString) => {
-        const subcategoryId = parseInt(subcategoryIdString, 10);
-        const subcategory = productsData.subcategories.find(
-          (subcat) => subcat.subCategoryId === subcategoryId
-        );
-        return subcategory
-          ? subcategory.subCategoryName
-          : "Subcategory not found";
-      })
-    );
-  }, [checkedSubcategories, productsData.subcategories]);
+    if (subcategories) {
+      setModalSubcategories(
+        checkedSubcategories.map((subcategoryIdString) => {
+          const subcategoryId = parseInt(subcategoryIdString, 10);
+          const subcategory = subcategories.find(
+            (subcat) => subcat.subCategoryId === subcategoryId
+          );
+          return subcategory
+            ? subcategory.subCategoryName
+            : "Subcategory not found";
+        })
+      );
+    }
+  }, [checkedSubcategories, subcategories]);
 
   useEffect(() => {
-    setModalSubproducts(
-      checkedSubproducts.map((subproductIdString) => {
-        const subproductId = parseInt(subproductIdString, 10);
-        const subproduct = productsData.subproducts.find(
-          (subprod) => subprod.subProductId === subproductId
-        );
-        return subproduct ? subproduct.subProductName : "Subproduct not found";
-      })
-    );
-  }, [checkedSubproducts, productsData.subproducts]);
+    if (subproducts && subproducts) {
+      setModalSubproducts(
+        checkedSubproducts.map((subproductIdString) => {
+          const subproductId = parseInt(subproductIdString, 10);
+          const subproduct = subproducts.find(
+            (subprod) => subprod.subProductId === subproductId
+          );
+          return subproduct
+            ? subproduct.subProductName
+            : "Subproduct not found";
+        })
+      );
+    }
+  }, [checkedSubproducts, subproducts]);
 
   // Close modal when clicking outside
   useEffect(() => {
@@ -73,6 +79,14 @@ export default function Modalbox({ saveModal }) {
       document.removeEventListener("click", handleClickOutside);
     };
   }, []);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
 
   return (
     <div className="modal">
