@@ -8,6 +8,7 @@ export const useCheckedProducts = () => useContext(CheckedProductsContext);
 
 // Context provider component
 export const CheckedProductsProvider = ({ children }) => {
+  // State variables to store checked products, subcategories, and subproducts
   const [checkedProducts, setCheckedProducts] = useState([]);
   const [checkedSubcategories, setCheckedSubcategories] = useState([]);
   const [checkedSubproducts, setCheckedSubproducts] = useState([]);
@@ -31,6 +32,7 @@ export const CheckedProductsProvider = ({ children }) => {
     setCheckedSubproducts([]);
   };
 
+  // Provide the state variables and functions to the context
   return (
     <CheckedProductsContext.Provider
       value={{
