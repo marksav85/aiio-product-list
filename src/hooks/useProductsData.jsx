@@ -16,7 +16,6 @@ export const useProductsData = () => {
         }
         const productsData = await productsRes.json();
         setProducts(productsData);
-        console.log("productsData", productsData);
 
         const subcategoriesRes = await fetch(
           "http://localhost:8000/subcategories/"
@@ -26,7 +25,6 @@ export const useProductsData = () => {
         }
         const subcategoriesData = await subcategoriesRes.json();
         setSubcategories(subcategoriesData);
-        console.log("subcategoriesData", subcategoriesData);
 
         const subproductsRes = await fetch(
           "http://localhost:8000/subproducts/"
@@ -36,7 +34,6 @@ export const useProductsData = () => {
         }
         const subproductsData = await subproductsRes.json();
         setSubproducts(subproductsData);
-        console.log("subproductsData", subproductsData);
 
         setIsLoading(false);
         setError(null);

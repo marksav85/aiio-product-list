@@ -27,7 +27,6 @@ export default function Subproducts({ subCategoryId }) {
       (subProductId) => subproductItems[subProductId]
     );
     setCheckedSubproducts(checkedSubproductIds);
-    console.log("checkedSubproductIds", checkedSubproductIds);
   };
 
   if (!subproducts) {

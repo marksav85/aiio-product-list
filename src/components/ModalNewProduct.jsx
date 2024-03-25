@@ -21,7 +21,6 @@ export default function ModalNewProduct({ createProduct }) {
       subProductName: subProduct,
       subCategoryId: 10,
     };
-    console.log("Create subProductData", subProductData);
 
     createSubProduct(subProductData);
 

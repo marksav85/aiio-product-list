@@ -29,7 +29,6 @@ export default function Subcategories({ productId }) {
       (subCategoryId) => categoryItems[subCategoryId]
     );
     setCheckedSubcategories(checkedSubCategoryIds);
-    console.log("checkedSubCategoryIds", checkedSubCategoryIds);
   };
 
   if (!subcategories) {

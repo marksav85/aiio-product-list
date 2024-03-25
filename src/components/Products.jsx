@@ -18,7 +18,6 @@ export default function Products() {
 
   const handleAddProduct = () => {
     setCheckedProducts(checkedProductIds);
-    console.log("checkedProductIds", checkedProductIds);
   };
 
   if (isLoading) {
