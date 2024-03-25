@@ -4,9 +4,9 @@ import { useCheckedProducts } from "../context/CheckedProductsContext";
 // Import custom hook for fetching products data
 import { useProductsData } from "../hooks/useProductsData";
 // Import CSS
-import "./Modalbox.css";
+import "./ModalOrderList.css";
 
-export default function Modalbox({ saveModal }) {
+export default function ModalOrderList({ saveModal }) {
   const { products, subcategories, subproducts, isLoading, error } =
     useProductsData();
 

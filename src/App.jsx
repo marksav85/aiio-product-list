@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Products from "./components/Products";
 import Navbar from "./components/Navbar";
-import Modalbox from "./components/Modalbox";
+import ModalOrderList from "./components/ModalOrderList";
 import { CheckedProductsProvider } from "./context/CheckedProductsContext";
 
 import "./App.css";
@@ -21,7 +21,7 @@ function App() {
         <Navbar toggleModal={toggleModal} />
         <Products />
         {/* Render Modal component if modalVisible is true */}
-        {modalVisible && <Modalbox saveModal={toggleModal} />}
+        {modalVisible && <ModalOrderList saveModal={toggleModal} />}
       </div>
     </CheckedProductsProvider>
   );
