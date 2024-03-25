@@ -30,7 +30,7 @@ function App() {
         />
         <Products />
         {/* Render Modal component if modalVisible is true */}
-        {orderVisible && <ModalOrderList saveOrder={toggleOrderList} />}
+        {orderVisible && <ModalOrderList closeOrder={toggleOrderList} />}
         {newProductVisible && (
           <ModalNewProduct createProduct={toggleNewProduct} />
         )}
