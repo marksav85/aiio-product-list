@@ -24,6 +24,13 @@ export const CheckedProductsProvider = ({ children }) => {
     });
   };
 
+  // Function to reset state variables to empty arrays
+  const resetState = () => {
+    setCheckedProducts([]);
+    setCheckedSubcategories([]);
+    setCheckedSubproducts([]);
+  };
+
   return (
     <CheckedProductsContext.Provider
       value={{
@@ -36,6 +43,7 @@ export const CheckedProductsProvider = ({ children }) => {
         checkedSubproducts,
         setCheckedSubproducts: (data) =>
           updateStateAndPreserveData(setCheckedSubproducts, data),
+        resetState,
       }}
     >
       {children}
