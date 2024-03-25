@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import "./ModalNewProduct.css";
+import { useProductsData } from "../hooks/useProductsData";
 
 export default function ModalNewProduct({ createProduct }) {
+  const { createSubProduct, subproducts } = useProductsData();
   const [subProduct, setSubProduct] = useState("");
 
   const handleSubProductChange = (event) => {
@@ -10,10 +12,21 @@ export default function ModalNewProduct({ createProduct }) {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // Here you can handle submitting the subProduct data
-    console.log("Subproduct added:", subProduct);
-    // Reset the form after submission
+
+    const subProductTotal = subproducts.length;
+    const nextSubProductId = subProductTotal + 1;
+
+    const subProductData = {
+      subProductId: nextSubProductId,
+      subProductName: subProduct,
+      subCategoryId: 10,
+    };
+    console.log("Create subProductData", subProductData);
+
+    createSubProduct(subProductData);
+
     setSubProduct("");
+
     createProduct();
   };
 
