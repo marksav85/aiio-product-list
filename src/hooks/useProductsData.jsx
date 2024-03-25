@@ -69,6 +69,25 @@ export const useProductsData = () => {
     }
   };
 
+  const saveOrderData = async (orderData) => {
+    try {
+      const response = await fetch("http://localhost:8000/orders/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(orderData),
+      });
+      if (!response.ok) {
+        throw new Error("Failed to post order data");
+      }
+      const responseData = await response.json();
+      console.log("Order data saved:", responseData);
+    } catch (error) {
+      console.error("Error posting order data:", error.message);
+    }
+  };
+
   return {
     products,
     subcategories,
@@ -76,5 +95,6 @@ export const useProductsData = () => {
     isLoading,
     error,
     createSubProduct,
+    saveOrderData,
   };
 };
