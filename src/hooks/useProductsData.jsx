@@ -49,5 +49,32 @@ export const useProductsData = () => {
     fetchData();
   }, []);
 
-  return { products, subcategories, subproducts, isLoading, error };
+  const createSubProduct = async (subProductData) => {
+    try {
+      const response = await fetch("http://localhost:8000/subproducts/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(subProductData),
+      });
+      if (!response.ok) {
+        throw new Error("Failed to add subproduct", subProductData);
+      }
+      const newSubProduct = await response.json();
+      setSubproducts([...subproducts, newSubProduct]); // Update subproducts state with the newly added subproduct
+      console.log("Subproduct added:", newSubProduct);
+    } catch (error) {
+      console.error("Error adding subproduct:", error.message);
+    }
+  };
+
+  return {
+    products,
+    subcategories,
+    subproducts,
+    isLoading,
+    error,
+    createSubProduct,
+  };
 };
