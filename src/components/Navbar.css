@@ -18,3 +18,7 @@
   align-items: center;
   margin-right: auto;
 }
+
+.navbar button {
+  margin: 20px;
+}
