@@ -180,7 +180,7 @@ export default function ModalOrderList({ closeOrder }) {
         </div>
         <div className="order-btns">
           <div className="modal-btn">
-            <button className="close btn" onClick={clearOrder}>
+            <button className="clear btn" onClick={clearOrder}>
               Clear
             </button>
             <button className="close btn" onClick={saveOrder}>
