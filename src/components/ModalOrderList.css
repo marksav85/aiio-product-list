@@ -30,3 +30,7 @@
   align-items: center;
   justify-content: end;
 }
+
+.order-btns button {
+  margin: 10px;
+}
