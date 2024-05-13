@@ -4,12 +4,13 @@ import { useCheckedProducts } from "../context/CheckedProductsContext";
 import { useProductsData } from "../hooks/useProductsData";
 import "./Subcategories.css";
 
-export default function Subcategories({ productId }) {
+export default function Subcategories({ productId, productSelectionState }) {
   const { subcategories } = useProductsData();
   const { checkedSubcategories, setCheckedSubcategories } =
     useCheckedProducts();
+  const { checkedSubproducts, setCheckedSubproducts } = useCheckedProducts();
 
-  const [categoryItems, setCategoryItems] = useState({});
+  const [checkedCategoryIds, setCheckedCategoryIds] = useState({});
   const [searchText, setSearchText] = useState("");
   const [showSubcategories, setShowSubcategories] = useState(true);
 
@@ -18,18 +19,44 @@ export default function Subcategories({ productId }) {
   };
 
   const handleCategoryChange = (subCategoryId) => {
-    setCategoryItems({
-      ...categoryItems,
-      [subCategoryId]: !categoryItems[subCategoryId],
-    });
-  };
+    const isChecked = checkedCategoryIds[subCategoryId]; // Get the current checked state of the checkbox
 
-  const handleAddSubcategory = () => {
-    const checkedSubCategoryIds = Object.keys(categoryItems).filter(
-      (subCategoryId) => categoryItems[subCategoryId]
-    );
-    setCheckedSubcategories(checkedSubCategoryIds);
-    console.log("checkedSubCategoryIds", checkedSubCategoryIds);
+    // Update checkedCategoryIds to toggle the checked state of the checkbox
+    setCheckedCategoryIds((prevcheckedCategoryIds) => ({
+      ...prevcheckedCategoryIds,
+      [subCategoryId]: !isChecked,
+    }));
+
+    // Update checkedSubcategories based on whether the checkbox is checked or not
+    setCheckedSubcategories((prevCheckedSubCategories) => {
+      let updatedCheckedSubCategories = [...prevCheckedSubCategories];
+
+      // Check if the item already added
+      const alreadyAdded = updatedCheckedSubCategories.some(
+        (item) => item.subCategoryId === subCategoryId
+      );
+
+      if (!alreadyAdded && !isChecked) {
+        // If the item isn't already added and the checkbox is checked, add the item
+        updatedCheckedSubCategories.push(
+          subcategories.find((item) => item.subCategoryId === subCategoryId)
+        );
+      } else if (alreadyAdded && isChecked) {
+        // If the item is already added and the checkbox is unchecked, remove the item
+        updatedCheckedSubCategories = updatedCheckedSubCategories.filter(
+          (item) => item.subCategoryId !== subCategoryId
+        );
+
+        // Remove corresponding items from checkedSubproducts
+        setCheckedSubproducts((prevCheckedSubproducts) =>
+          prevCheckedSubproducts.filter(
+            (item) => item.subCategoryId !== subCategoryId
+          )
+        );
+      }
+
+      return updatedCheckedSubCategories;
+    });
   };
 
   if (!subcategories) {
@@ -70,14 +97,19 @@ export default function Subcategories({ productId }) {
                   <label>{subCategory.subCategoryName}</label>
                   <input
                     type="checkbox"
-                    checked={categoryItems[subCategory.subCategoryId] || false}
+                    checked={
+                      checkedCategoryIds[subCategory.subCategoryId] || false
+                    }
                     onChange={() =>
                       handleCategoryChange(subCategory.subCategoryId)
                     }
                   />
                 </div>
-                {categoryItems[subCategory.subCategoryId] && (
-                  <Subproducts subCategoryId={subCategory.subCategoryId} />
+                {checkedCategoryIds[subCategory.subCategoryId] && (
+                  <Subproducts
+                    subCategoryId={subCategory.subCategoryId}
+                    checkedSubcategories={checkedSubcategories} // Pass checkedSubcategories
+                  />
                 )}
               </div>
             ))}
@@ -85,9 +117,7 @@ export default function Subcategories({ productId }) {
       )}
       {showSubcategories && (
         <div className="product-btn">
-          <button className="btn" onClick={handleAddSubcategory}>
-            Add Subcategory
-          </button>
+          <button className="btn">Add Subcategory</button>
         </div>
       )}
     </div>
