@@ -3,14 +3,14 @@ import { useCheckedProducts } from "../context/CheckedProductsContext";
 import { useProductsData } from "../hooks/useProductsData";
 import "./Subproducts.css";
 
-export default function Subproducts({ subCategoryId, checkedSubcategories }) {
+export default function Subproducts({ subCategoryId }) {
   const { subproducts } = useProductsData();
   // Access checked subproducts and setCheckedSubproducts function from context
   const { checkedSubproducts, setCheckedSubproducts } = useCheckedProducts();
-
   const [checkedSubproductIds, setCheckedSubproductIds] = useState({});
   const [searchText, setSearchText] = useState("");
   const [showSubproducts, setShowSubproducts] = useState(true);
+  const { toggleNewProduct } = useCheckedProducts();
 
   const toggleSubproductVisibility = () => {
     setShowSubproducts(!showSubproducts);
@@ -116,7 +116,9 @@ export default function Subproducts({ subCategoryId, checkedSubcategories }) {
       {/* Button to add selected subproducts */}
       {showSubproducts && (
         <div className="product-btn">
-          <button className="btn">Add Subproduct</button>
+          <button className="btn" onClick={toggleNewProduct}>
+            Add Subproduct
+          </button>
         </div>
       )}
     </div>
