@@ -7,7 +7,7 @@ import { useProductsData } from "../hooks/useProductsData";
 import "./ModalOrderList.css";
 
 // Component for displaying the modal order list
-export default function ModalOrderList({ closeOrder }) {
+export default function ModalOrderList() {
   // Retrieve products, subcategories, subproducts, saveOrderData, isLoading, and error from the useProductsData hook
   const {
     products,
@@ -30,6 +30,10 @@ export default function ModalOrderList({ closeOrder }) {
   const [modalProducts, setModalProducts] = useState([]);
   const [modalSubcategories, setModalSubcategories] = useState([]);
   const [modalSubproducts, setModalSubproducts] = useState([]);
+
+  // Retrieve orderVisible and toggleOrderList function using the useCheckedProducts hook
+  const { orderVisible } = useCheckedProducts();
+  const { toggleOrderList } = useCheckedProducts();
 
   // Update modal display data when checked items change
   useEffect(() => {
@@ -62,14 +66,14 @@ export default function ModalOrderList({ closeOrder }) {
         // Prevent the default behavior of the click event
         event.preventDefault();
         event.stopPropagation();
-        closeOrder(); // Close the modal when clicking outside
+        toggleOrderList(); // Close the modal when clicking outside
       }
     };
     document.addEventListener("click", handleClickOutside, true);
     return () => {
       document.removeEventListener("click", handleClickOutside, true);
     };
-  }, [closeOrder]);
+  }, [toggleOrderList]);
 
   // Display loading message while fetching data
   if (isLoading) {
@@ -116,7 +120,7 @@ export default function ModalOrderList({ closeOrder }) {
     resetState();
 
     // Close the modal
-    closeOrder();
+    toggleOrderList();
 
     console.log("Order data saved:", orderData);
   };
@@ -127,58 +131,62 @@ export default function ModalOrderList({ closeOrder }) {
     resetState();
 
     // Close the modal
-    closeOrder();
+    toggleOrderList();
   };
 
   return (
-    // Modal container
-    <div className="modal">
-      <div className="modal-content">
-        {/* Display selected products */}
-        <div className="modal-products">
-          <h4>Products:</h4>
-          {modalProducts.length > 0 ? (
-            modalProducts.map((productName, index) => (
-              <p key={index}>{productName}</p>
-            ))
-          ) : (
-            <p>No products selected</p>
-          )}
-        </div>
-        {/* Display selected subcategories */}
-        <div className="modal-subcategories">
-          <h4>SubCategories:</h4>
-          {modalSubcategories.length > 0 ? (
-            modalSubcategories.map((subcategory, index) => (
-              <p key={index}>{subcategory}</p>
-            ))
-          ) : (
-            <p>No sub-categories selected</p>
-          )}
-        </div>
-        {/* Display selected subproducts */}
-        <div className="modal-subproducts">
-          <h4>SubProducts:</h4>
-          {modalSubproducts.length > 0 ? (
-            modalSubproducts.map((subProductName, index) => (
-              <p key={index}>{subProductName}</p>
-            ))
-          ) : (
-            <p>No sub-products selected</p>
-          )}
-        </div>
-        {/* Buttons for clearing or saving order */}
-        <div className="order-btns">
-          <div className="modal-btn">
-            <button className="clear btn" onClick={clearOrder}>
-              Clear
-            </button>
-            <button className="close btn" onClick={saveOrder}>
-              Save
-            </button>
+    <>
+      {orderVisible && (
+        // Modal container
+        <div className="modal">
+          <div className="modal-content">
+            {/* Display selected products */}
+            <div className="modal-products">
+              <h4>Products:</h4>
+              {modalProducts.length > 0 ? (
+                modalProducts.map((productName, index) => (
+                  <p key={index}>{productName}</p>
+                ))
+              ) : (
+                <p>No products selected</p>
+              )}
+            </div>
+            {/* Display selected subcategories */}
+            <div className="modal-subcategories">
+              <h4>SubCategories:</h4>
+              {modalSubcategories.length > 0 ? (
+                modalSubcategories.map((subcategory, index) => (
+                  <p key={index}>{subcategory}</p>
+                ))
+              ) : (
+                <p>No sub-categories selected</p>
+              )}
+            </div>
+            {/* Display selected subproducts */}
+            <div className="modal-subproducts">
+              <h4>SubProducts:</h4>
+              {modalSubproducts.length > 0 ? (
+                modalSubproducts.map((subProductName, index) => (
+                  <p key={index}>{subProductName}</p>
+                ))
+              ) : (
+                <p>No sub-products selected</p>
+              )}
+            </div>
+            {/* Buttons for clearing or saving order */}
+            <div className="order-btns">
+              <div className="modal-btn">
+                <button className="clear btn" onClick={clearOrder}>
+                  Clear
+                </button>
+                <button className="close btn" onClick={saveOrder}>
+                  Save
+                </button>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
+      )}
+    </>
   );
 }

@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import "./ModalNewProduct.css";
 import { useProductsData } from "../hooks/useProductsData";
+import { useCheckedProducts } from "../context/CheckedProductsContext";
 
-export default function ModalNewProduct({ closeModal }) {
+export default function ModalNewProduct() {
   const { createSubProduct, subproducts } = useProductsData();
-
+  const { newProductVisible } = useCheckedProducts();
+  const { toggleNewProduct } = useCheckedProducts();
   // State variable to store the value of the new subproduct
   const [subProduct, setSubProduct] = useState("");
 
@@ -34,7 +36,7 @@ export default function ModalNewProduct({ closeModal }) {
     // Clear the input field after submission
     setSubProduct("");
 
-    closeModal();
+    toggleNewProduct();
   };
 
   // Close modal when clicking outside
@@ -45,43 +47,46 @@ export default function ModalNewProduct({ closeModal }) {
         // Prevent the default behavior of the click event
         event.preventDefault();
         event.stopPropagation();
-        closeModal(); // Close the modal when clicking outside
+        toggleNewProduct(); // Close the modal when clicking outside
       }
     };
     document.addEventListener("click", handleClickOutside, true);
     return () => {
       document.removeEventListener("click", handleClickOutside, true);
     };
-  }, [closeModal]);
+  }, [toggleNewProduct]);
 
   return (
-    <div className="modal new-product">
-      <div className="modal-content new-product-content">
-        <h2>Add a New Product</h2>
+    <>
+      {newProductVisible && (
+        <div className="modal new-product">
+          <div className="modal-content new-product-content">
+            <h2>Add a New Product</h2>
 
-        <form className="new-product-form" onSubmit={handleSubmit}>
-          <label>
-            <span>Add SubProduct</span>
-            {/* Input field for entering the new subproduct */}
-            <input
-              type="text"
-              value={subProduct}
-              onChange={handleSubProductChange}
-              required
-            />
-          </label>
-          <div className="order-btns">
-            <div className="modal-btn">
-              <button className="clear btn" onClick={closeModal}>
-                Close
-              </button>
-              <button className="close btn" type="submit">
-                Submit
-              </button>
-            </div>
+            <form className="new-product-form" onSubmit={handleSubmit}>
+              <label>
+                <span>Add SubProduct</span>
+                {/* Input field for entering the new subproduct */}
+                <input
+                  type="text"
+                  value={subProduct}
+                  onChange={handleSubProductChange}
+                />
+              </label>
+              <div className="order-btns">
+                <div className="modal-btn">
+                  <button className="clear btn" onClick={toggleNewProduct}>
+                    Close
+                  </button>
+                  <button className="close btn" type="submit">
+                    Submit
+                  </button>
+                </div>
+              </div>
+            </form>
           </div>
-        </form>
-      </div>
-    </div>
+        </div>
+      )}
+    </>
   );
 }

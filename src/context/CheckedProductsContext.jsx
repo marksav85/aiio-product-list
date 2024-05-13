@@ -12,6 +12,8 @@ export const CheckedProductsProvider = ({ children }) => {
   const [checkedProducts, setCheckedProducts] = useState([]);
   const [checkedSubcategories, setCheckedSubcategories] = useState([]);
   const [checkedSubproducts, setCheckedSubproducts] = useState([]);
+  const [newProductVisible, setNewProductVisible] = useState(false);
+  const [orderVisible, setOrderVisible] = useState(false);
 
   // Function to update state and replace existing data with new data
   const updateStateAndReplaceData = (setter, newData) => {
@@ -23,6 +25,14 @@ export const CheckedProductsProvider = ({ children }) => {
     setCheckedProducts([]);
     setCheckedSubcategories([]);
     setCheckedSubproducts([]);
+  };
+
+  const toggleNewProduct = () => {
+    setNewProductVisible(!newProductVisible);
+  };
+
+  const toggleOrderList = () => {
+    setOrderVisible(!orderVisible);
   };
 
   // Provide the state variables and functions to the context
@@ -39,6 +49,10 @@ export const CheckedProductsProvider = ({ children }) => {
         setCheckedSubproducts: (data) =>
           updateStateAndReplaceData(setCheckedSubproducts, data),
         resetState,
+        toggleNewProduct,
+        newProductVisible,
+        toggleOrderList,
+        orderVisible,
       }}
     >
       {children}

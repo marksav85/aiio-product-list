@@ -1,4 +1,3 @@
-import { useState } from "react";
 import Products from "./components/Products";
 import Navbar from "./components/Navbar";
 import ModalOrderList from "./components/ModalOrderList";
@@ -8,30 +7,13 @@ import { CheckedProductsProvider } from "./context/CheckedProductsContext";
 import "./App.css";
 
 function App() {
-  // State to manage modal visibility
-  const [orderVisible, setOrderVisible] = useState(false);
-  const [newProductVisible, setNewProductVisible] = useState(false);
-
-  // Function to toggle modal visibility
-  const toggleOrderList = () => {
-    setOrderVisible(!orderVisible);
-  };
-
-  const toggleNewProduct = () => {
-    setNewProductVisible(!newProductVisible);
-  };
-
   return (
     <CheckedProductsProvider>
       <div className="App">
-        <Navbar
-          toggleOrderList={toggleOrderList}
-          toggleNewProduct={toggleNewProduct}
-        />
+        <Navbar />
         <Products />
-        {/* Render Modal component if modalVisible is true */}
-        {orderVisible && <ModalOrderList closeOrder={toggleOrderList} />}
-        {newProductVisible && <ModalNewProduct closeModal={toggleNewProduct} />}
+        <ModalOrderList />
+        <ModalNewProduct />
       </div>
     </CheckedProductsProvider>
   );
