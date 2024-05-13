@@ -8,17 +8,72 @@ export default function Products() {
   const { products, isLoading, error } = useProductsData();
   const { checkedProducts, setCheckedProducts } = useCheckedProducts();
   const [checkedProductIds, setCheckedProductIds] = useState([]);
+  const { checkedSubcategories, setCheckedSubcategories } =
+    useCheckedProducts();
+  const { checkedSubproducts, setCheckedSubproducts } = useCheckedProducts();
+  const [productSelectionState, setProductSelectionState] = useState({});
 
   const handleProductChange = (productId) => {
-    const newCheckedProductIds = checkedProductIds.includes(productId)
-      ? checkedProductIds.filter((id) => id !== productId)
-      : [...checkedProductIds, productId];
-    setCheckedProductIds(newCheckedProductIds);
-  };
+    const isChecked = checkedProductIds[productId]; // Get the current checked state of the checkbox
 
-  const handleAddProduct = () => {
-    setCheckedProducts(checkedProductIds);
-    console.log("checkedProductIds", checkedProductIds);
+    // Update checkedProductIds to toggle the checked state of the checkbox
+    setCheckedProductIds((prevCheckedProductIds) => ({
+      ...prevCheckedProductIds,
+      [productId]: !isChecked,
+    }));
+
+    // Update checkedProducts based on whether the checkbox is checked or not
+    setCheckedProducts((prevCheckedProducts) => {
+      let updatedCheckedProducts = [...prevCheckedProducts];
+
+      // Check if the item already added
+      const alreadyAdded = updatedCheckedProducts.some(
+        (item) => item.productId === productId
+      );
+
+      if (!alreadyAdded && !isChecked) {
+        // If the item isn't already added and the checkbox is checked, add the item
+        updatedCheckedProducts.push(
+          products.find((item) => item.productId === productId)
+        );
+      } else if (alreadyAdded && isChecked) {
+        // If the item is already added and the checkbox is unchecked, remove the item
+        updatedCheckedProducts = updatedCheckedProducts.filter(
+          (item) => item.productId !== productId
+        );
+
+        // Remove corresponding items from checkedSubcategories
+        setCheckedSubcategories((prevCheckedSubCategories) =>
+          prevCheckedSubCategories.filter(
+            (item) => item.productId !== productId
+          )
+        );
+
+        // Remove corresponding items from checkedSubproducts
+        setCheckedSubproducts((prevCheckedSubproducts) =>
+          prevCheckedSubproducts.filter((item) => item.productId !== productId)
+        );
+
+        if (checkedSubcategories && checkedSubproducts) {
+          // Extract subCategoryIds from checkedSubcategories with matching productId
+          const subCategoryIdsToRemove = [];
+          for (const category of checkedSubcategories) {
+            if (category.productId === productId) {
+              subCategoryIdsToRemove.push(category.subCategoryId);
+            }
+          }
+
+          // Remove properties from checkedSubproducts where subCategoryId matches
+          setCheckedSubproducts((prevCheckedSubproducts) =>
+            prevCheckedSubproducts.filter(
+              (item) => !subCategoryIdsToRemove.includes(item.subCategoryId)
+            )
+          );
+        }
+      }
+
+      return updatedCheckedProducts;
+    });
   };
 
   if (isLoading) {
@@ -40,20 +95,21 @@ export default function Products() {
                 <label>{product.productName}</label>
                 <input
                   type="checkbox"
-                  checked={checkedProductIds.includes(product.productId)}
+                  checked={checkedProductIds[product.productId] || false}
                   onChange={() => handleProductChange(product.productId)}
                 />
               </div>
-              {checkedProductIds.includes(product.productId) && (
-                <Subcategories productId={product.productId} />
+              {checkedProductIds[product.productId] && (
+                <Subcategories
+                  productId={product.productId}
+                  productSelectionState={productSelectionState}
+                />
               )}
             </div>
           ))}
       </div>
       <div className="product-btn">
-        <button className="btn" onClick={handleAddProduct}>
-          Add Product
-        </button>
+        <button className="btn">Add Product</button>
       </div>
     </div>
   );
