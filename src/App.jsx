@@ -31,9 +31,7 @@ function App() {
         <Products />
         {/* Render Modal component if modalVisible is true */}
         {orderVisible && <ModalOrderList closeOrder={toggleOrderList} />}
-        {newProductVisible && (
-          <ModalNewProduct createProduct={toggleNewProduct} />
-        )}
+        {newProductVisible && <ModalNewProduct closeModal={toggleNewProduct} />}
       </div>
     </CheckedProductsProvider>
   );
