@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Subcategories from "./Subcategories";
 import { useCheckedProducts } from "../context/CheckedProductsContext";
 import { useProductsData } from "../hooks/useProductsData";
@@ -80,6 +80,14 @@ export default function Products() {
       return updatedCheckedProducts;
     });
   };
+
+  // useEffect to watch for changes in checkedProducts and clear checkboxes if it becomes empty
+  useEffect(() => {
+    // If checkedProducts becomes empty, clear all checkboxes
+    if (checkedProducts.length === 0) {
+      setCheckedProductIds({});
+    }
+  }, [checkedProducts]);
 
   // Render loading message if products data is still loading
   if (isLoading) {
