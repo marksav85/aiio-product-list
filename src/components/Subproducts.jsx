@@ -1,13 +1,13 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useCheckedProducts } from "../context/CheckedProductsContext";
 import { useProductsData } from "../hooks/useProductsData";
 import "./Subproducts.css";
 
-export default function Subproducts({ subCategoryId }) {
+export default function Subproducts({ subCategoryId, checkedSubcategories }) {
   const { subproducts } = useProductsData();
   const { checkedSubproducts, setCheckedSubproducts } = useCheckedProducts();
 
-  const [subproductItems, setSubproductItems] = useState({});
+  const [checkedSubproductIds, setCheckedSubproductIds] = useState({});
   const [searchText, setSearchText] = useState("");
   const [showSubproducts, setShowSubproducts] = useState(true);
 
@@ -16,19 +16,42 @@ export default function Subproducts({ subCategoryId }) {
   };
 
   const handleSubproductChange = (subProductId) => {
-    setSubproductItems({
-      ...subproductItems,
-      [subProductId]: !subproductItems[subProductId],
+    const isChecked = checkedSubproductIds[subProductId]; // Get the current checked state of the checkbox
+
+    // Update subproductItems to toggle the checked state of the checkbox
+    setCheckedSubproductIds((prevCheckedSubproductIds) => ({
+      ...prevCheckedSubproductIds,
+      [subProductId]: !isChecked,
+    }));
+
+    // Update checkedSubproducts based on whether the checkbox is checked or not
+    setCheckedSubproducts((prevCheckedSubproductIds) => {
+      let updatedCheckedSubProducts = [...prevCheckedSubproductIds];
+
+      // Check if the item already added
+      const alreadyAdded = updatedCheckedSubProducts.some(
+        (item) => item.subProductId === subProductId
+      );
+
+      if (!alreadyAdded && !isChecked) {
+        // If the item isn't already added and the checkbox is checked, add the item
+        updatedCheckedSubProducts.push(
+          subproducts.find((item) => item.subProductId === subProductId)
+        );
+      } else if (alreadyAdded && isChecked) {
+        // If the item is already added and the checkbox is unchecked, remove the item
+        updatedCheckedSubProducts = updatedCheckedSubProducts.filter(
+          (item) => item.subProductId !== subProductId
+        );
+      }
+
+      return updatedCheckedSubProducts;
     });
   };
 
-  const handleAddSubproduct = () => {
-    const checkedSubproductIds = Object.keys(subproductItems).filter(
-      (subProductId) => subproductItems[subProductId]
-    );
-    setCheckedSubproducts(checkedSubproductIds);
-    console.log("checkedSubproductIds", checkedSubproductIds);
-  };
+  useEffect(() => {
+    console.log("checked Subproducts", checkedSubproducts);
+  }, [checkedSubproducts, subproducts]);
 
   if (!subproducts) {
     return <div>Loading...</div>;
@@ -68,7 +91,9 @@ export default function Subproducts({ subCategoryId }) {
                   <label>{subproduct.subProductName}</label>
                   <input
                     type="checkbox"
-                    checked={subproductItems[subproduct.subProductId] || false}
+                    checked={
+                      checkedSubproductIds[subproduct.subProductId] || false
+                    }
                     onChange={() =>
                       handleSubproductChange(subproduct.subProductId)
                     }
@@ -80,9 +105,7 @@ export default function Subproducts({ subCategoryId }) {
       )}
       {showSubproducts && (
         <div className="product-btn">
-          <button className="btn" onClick={handleAddSubproduct}>
-            Add Subproduct
-          </button>
+          <button className="btn">Add Subproduct</button>
         </div>
       )}
     </div>
