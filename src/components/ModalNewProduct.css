@@ -1,11 +1,35 @@
+.np-close-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  width: 100%;
+}
+
+.np-close-btn button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: 0;
+  font-size: 20px;
+  color: #333;
+}
+
+.np-close-btn button:hover {
+  color: #000;
+}
+
+.np-close-btn button:focus {
+  outline: none;
+}
+
 .new-product h2 {
-  margin-bottom: 20px;
+  margin-bottom: 10px;
+  margin-right: 20px;
 }
 
 .new-product-content {
   display: flex;
   flex-direction: column;
-
   align-items: center;
 }
 
