@@ -61,7 +61,12 @@ export default function ModalNewProduct() {
       {newProductVisible && (
         <div className="modal new-product">
           <div className="modal-content new-product-content">
-            <h2>Add a New Product</h2>
+            <div className="np-close-btn">
+              <button onClick={toggleNewProduct}>X</button>
+            </div>
+            <div className="np-title">
+              <h2>Add a New Product</h2>
+            </div>
 
             <form className="new-product-form" onSubmit={handleSubmit}>
               <label>
@@ -71,13 +76,11 @@ export default function ModalNewProduct() {
                   type="text"
                   value={subProduct}
                   onChange={handleSubProductChange}
+                  required
                 />
               </label>
               <div className="order-btns">
                 <div className="modal-btn">
-                  <button className="clear btn" onClick={toggleNewProduct}>
-                    Close
-                  </button>
                   <button className="close btn" type="submit">
                     Submit
                   </button>
