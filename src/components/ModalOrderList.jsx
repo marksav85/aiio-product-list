@@ -32,45 +32,23 @@ export default function ModalOrderList({ closeOrder }) {
 
   // Update modal display data when checked items change
   useEffect(() => {
-    if (products) {
-      setModalProducts(
-        checkedProducts.map((productIdString) => {
-          const productId = parseInt(productIdString, 10);
-          const product = products.find((prod) => prod.productId === productId);
-          return product ? product.productName : "Product not found";
-        })
-      );
+    if (checkedProducts && products) {
+      setModalProducts(checkedProducts.map((product) => product.productName));
     }
   }, [checkedProducts, products]);
 
   useEffect(() => {
-    if (subcategories) {
+    if (checkedSubcategories && subcategories) {
       setModalSubcategories(
-        checkedSubcategories.map((subcategoryIdString) => {
-          const subcategoryId = parseInt(subcategoryIdString, 10);
-          const subcategory = subcategories.find(
-            (subcat) => subcat.subCategoryId === subcategoryId
-          );
-          return subcategory
-            ? subcategory.subCategoryName
-            : "Subcategory not found";
-        })
+        checkedSubcategories.map((subcategory) => subcategory.subCategoryName)
       );
     }
   }, [checkedSubcategories, subcategories]);
 
   useEffect(() => {
-    if (subproducts && subproducts) {
+    if (checkedSubproducts && subproducts) {
       setModalSubproducts(
-        checkedSubproducts.map((subproductIdString) => {
-          const subproductId = parseInt(subproductIdString, 10);
-          const subproduct = subproducts.find(
-            (subprod) => subprod.subProductId === subproductId
-          );
-          return subproduct
-            ? subproduct.subProductName
-            : "Subproduct not found";
-        })
+        checkedSubproducts.map((subproduct) => subproduct.subProductName)
       );
     }
   }, [checkedSubproducts, subproducts]);
@@ -83,13 +61,14 @@ export default function ModalOrderList({ closeOrder }) {
         // Prevent the default behavior of the click event
         event.preventDefault();
         event.stopPropagation();
+        closeOrder(); // Close the modal when clicking outside
       }
     };
     document.addEventListener("click", handleClickOutside, true);
     return () => {
       document.removeEventListener("click", handleClickOutside, true);
     };
-  }, []);
+  }, [closeOrder]);
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -139,7 +118,6 @@ export default function ModalOrderList({ closeOrder }) {
 
   const clearOrder = () => {
     resetState();
-    closeOrder();
   };
 
   return (
