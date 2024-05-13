@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import "./ModalNewProduct.css";
 import { useProductsData } from "../hooks/useProductsData";
 
-export default function ModalNewProduct({ createProduct }) {
+export default function ModalNewProduct({ closeModal }) {
   const { createSubProduct, subproducts } = useProductsData();
   const [subProduct, setSubProduct] = useState("");
 
@@ -21,13 +21,12 @@ export default function ModalNewProduct({ createProduct }) {
       subProductName: subProduct,
       subCategoryId: 10,
     };
-    console.log("Create subProductData", subProductData);
 
     createSubProduct(subProductData);
 
     setSubProduct("");
 
-    createProduct();
+    closeModal();
   };
 
   // Close modal when clicking outside
@@ -38,18 +37,20 @@ export default function ModalNewProduct({ createProduct }) {
         // Prevent the default behavior of the click event
         event.preventDefault();
         event.stopPropagation();
+        closeModal(); // Close the modal when clicking outside
       }
     };
     document.addEventListener("click", handleClickOutside, true);
     return () => {
       document.removeEventListener("click", handleClickOutside, true);
     };
-  }, []);
+  }, [closeModal]);
 
   return (
     <div className="modal new-product">
       <div className="modal-content new-product-content">
         <h2>Add a New Product</h2>
+
         <form className="new-product-form" onSubmit={handleSubmit}>
           <label>
             <span>Add SubProduct</span>
@@ -60,10 +61,15 @@ export default function ModalNewProduct({ createProduct }) {
               required
             />
           </label>
-          <div className="modal-btn">
-            <button className="btn" type="submit">
-              Submit
-            </button>
+          <div className="order-btns">
+            <div className="modal-btn">
+              <button className="clear btn" onClick={closeModal}>
+                Close
+              </button>
+              <button className="close btn" type="submit">
+                Submit
+              </button>
+            </div>
           </div>
         </form>
       </div>
