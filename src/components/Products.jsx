@@ -119,9 +119,11 @@ export default function Products() {
             </div>
           ))}
       </div>
-      {/* Button to add selected products */}
+      {/* Button to create new product. Currently disabled. */}
       <div className="product-btn">
-        <button className="btn">Add Product</button>
+        <button className="btn" disabled>
+          Add Product
+        </button>
       </div>
     </div>
   );
