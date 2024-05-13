@@ -15,8 +15,8 @@ export const useProductsData = () => {
           throw new Error("Failed to fetch products");
         }
         const productsData = await productsRes.json();
+        // console.log("Products Data:", productsData);
         setProducts(productsData);
-        console.log("productsData", productsData);
 
         const subcategoriesRes = await fetch(
           "http://localhost:8000/subcategories/"
@@ -25,8 +25,8 @@ export const useProductsData = () => {
           throw new Error("Failed to fetch subcategories");
         }
         const subcategoriesData = await subcategoriesRes.json();
+        // console.log("Subcategories Data:", subcategoriesData);
         setSubcategories(subcategoriesData);
-        console.log("subcategoriesData", subcategoriesData);
 
         const subproductsRes = await fetch(
           "http://localhost:8000/subproducts/"
@@ -35,8 +35,8 @@ export const useProductsData = () => {
           throw new Error("Failed to fetch subproducts");
         }
         const subproductsData = await subproductsRes.json();
+        // console.log("Subproducts Data:", subproductsData);
         setSubproducts(subproductsData);
-        console.log("subproductsData", subproductsData);
 
         setIsLoading(false);
         setError(null);
@@ -63,7 +63,6 @@ export const useProductsData = () => {
       }
       const newSubProduct = await response.json();
       setSubproducts([...subproducts, newSubProduct]); // Update subproducts state with the newly added subproduct
-      console.log("Subproduct added:", newSubProduct);
     } catch (error) {
       console.error("Error adding subproduct:", error.message);
     }
@@ -82,7 +81,6 @@ export const useProductsData = () => {
         throw new Error("Failed to post order data");
       }
       const responseData = await response.json();
-      console.log("Order data saved:", responseData);
     } catch (error) {
       console.error("Error posting order data:", error.message);
     }
