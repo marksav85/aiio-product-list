@@ -12,16 +12,9 @@ export const CheckedProductsProvider = ({ children }) => {
   const [checkedSubcategories, setCheckedSubcategories] = useState([]);
   const [checkedSubproducts, setCheckedSubproducts] = useState([]);
 
-  // Function to update state and preserve existing data while avoiding duplicates
-  const updateStateAndPreserveData = (setter, newData) => {
-    setter((prevState) => {
-      // Create a set from the previous state to efficiently check for duplicates
-      const prevStateSet = new Set(prevState);
-      // Filter out any data that already exists in the previous state
-      const newDataFiltered = newData.filter((item) => !prevStateSet.has(item));
-      // Combine the filtered data with the previous state
-      return [...prevState, ...newDataFiltered];
-    });
+  // Function to update state and replace existing data with new data
+  const updateStateAndReplaceData = (setter, newData) => {
+    setter(newData);
   };
 
   // Function to reset state variables to empty arrays
@@ -36,13 +29,13 @@ export const CheckedProductsProvider = ({ children }) => {
       value={{
         checkedProducts,
         setCheckedProducts: (data) =>
-          updateStateAndPreserveData(setCheckedProducts, data),
+          updateStateAndReplaceData(setCheckedProducts, data),
         checkedSubcategories,
         setCheckedSubcategories: (data) =>
-          updateStateAndPreserveData(setCheckedSubcategories, data),
+          updateStateAndReplaceData(setCheckedSubcategories, data),
         checkedSubproducts,
         setCheckedSubproducts: (data) =>
-          updateStateAndPreserveData(setCheckedSubproducts, data),
+          updateStateAndReplaceData(setCheckedSubproducts, data),
         resetState,
       }}
     >
