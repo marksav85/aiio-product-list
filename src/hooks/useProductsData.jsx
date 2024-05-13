@@ -1,15 +1,22 @@
 import { useState, useEffect } from "react";
 
+// Custom hook to fetch products, subcategories, and subproducts data
 export const useProductsData = () => {
+  // State variables to store fetched data
   const [products, setProducts] = useState([]);
   const [subcategories, setSubcategories] = useState([]);
   const [subproducts, setSubproducts] = useState([]);
+
+  // State variables to handle loading and error states
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // Effect hook to fetch data from the server when the component mounts
   useEffect(() => {
+    // Function to fetch data asynchronously
     const fetchData = async () => {
       try {
+        // Fetch products data
         const productsRes = await fetch("http://localhost:8000/products/");
         if (!productsRes.ok) {
           throw new Error("Failed to fetch products");
@@ -18,6 +25,7 @@ export const useProductsData = () => {
         // console.log("Products Data:", productsData);
         setProducts(productsData);
 
+        // Fetch subcategories data
         const subcategoriesRes = await fetch(
           "http://localhost:8000/subcategories/"
         );
@@ -28,6 +36,7 @@ export const useProductsData = () => {
         // console.log("Subcategories Data:", subcategoriesData);
         setSubcategories(subcategoriesData);
 
+        // Fetch subproducts data
         const subproductsRes = await fetch(
           "http://localhost:8000/subproducts/"
         );
@@ -38,17 +47,21 @@ export const useProductsData = () => {
         // console.log("Subproducts Data:", subproductsData);
         setSubproducts(subproductsData);
 
+        // Update loading and error states
         setIsLoading(false);
         setError(null);
       } catch (error) {
+        // Set error state if fetching data fails
         setError(error.message);
         setIsLoading(false);
       }
     };
 
+    // Call the fetchData function
     fetchData();
   }, []);
 
+  // Function to add a new subproduct
   const createSubProduct = async (subProductData) => {
     try {
       const response = await fetch("http://localhost:8000/subproducts/", {
@@ -68,6 +81,7 @@ export const useProductsData = () => {
     }
   };
 
+  // Function to save order data
   const saveOrderData = async (orderData) => {
     try {
       const response = await fetch("http://localhost:8000/orders/", {
@@ -86,6 +100,7 @@ export const useProductsData = () => {
     }
   };
 
+  // Return the state variables and functions to be used by components
   return {
     products,
     subcategories,

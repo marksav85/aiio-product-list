@@ -4,15 +4,20 @@ import { useCheckedProducts } from "../context/CheckedProductsContext";
 import { useProductsData } from "../hooks/useProductsData";
 import "./Products.css";
 
+// Component for displaying products and their associated subcategories
 export default function Products() {
+  // Fetch products data using custom hook
   const { products, isLoading, error } = useProductsData();
+  // Access checked products and setCheckedProducts function from context
   const { checkedProducts, setCheckedProducts } = useCheckedProducts();
+  // State variable to store IDs of checked products
   const [checkedProductIds, setCheckedProductIds] = useState([]);
   const { checkedSubcategories, setCheckedSubcategories } =
     useCheckedProducts();
   const { checkedSubproducts, setCheckedSubproducts } = useCheckedProducts();
   const [productSelectionState, setProductSelectionState] = useState({});
 
+  // Function to handle changes in product selection
   const handleProductChange = (productId) => {
     const isChecked = checkedProductIds[productId]; // Get the current checked state of the checkbox
 
@@ -76,23 +81,29 @@ export default function Products() {
     });
   };
 
+  // Render loading message if products data is still loading
   if (isLoading) {
     return <div>Loading...</div>;
   }
 
+  // Render error message if there is an error fetching products data
   if (error) {
     return <div>Error: {error}</div>;
   }
 
   return (
     <div className="container">
+      {/* Page title */}
       <h2 className="page-title">Products</h2>
       <div className="product-list">
+        {/* Display products */}
         {products &&
           products.map((product) => (
             <div className="product-menu" key={product.productId}>
               <div className="product-item">
+                {/* Product name label */}
                 <label>{product.productName}</label>
+                {/* Checkbox to select product */}
                 <input
                   type="checkbox"
                   checked={checkedProductIds[product.productId] || false}
@@ -108,6 +119,7 @@ export default function Products() {
             </div>
           ))}
       </div>
+      {/* Button to add selected products */}
       <div className="product-btn">
         <button className="btn">Add Product</button>
       </div>

@@ -5,6 +5,7 @@ import "./Subproducts.css";
 
 export default function Subproducts({ subCategoryId, checkedSubcategories }) {
   const { subproducts } = useProductsData();
+  // Access checked subproducts and setCheckedSubproducts function from context
   const { checkedSubproducts, setCheckedSubproducts } = useCheckedProducts();
 
   const [checkedSubproductIds, setCheckedSubproductIds] = useState({});
@@ -15,6 +16,7 @@ export default function Subproducts({ subCategoryId, checkedSubcategories }) {
     setShowSubproducts(!showSubproducts);
   };
 
+  // Function to handle changes in subproduct selection
   const handleSubproductChange = (subProductId) => {
     const isChecked = checkedSubproductIds[subProductId]; // Get the current checked state of the checkbox
 
@@ -53,14 +55,17 @@ export default function Subproducts({ subCategoryId, checkedSubcategories }) {
     console.log("checked Subproducts", checkedSubproducts);
   }, [checkedSubproducts, subproducts]);
 
+  // Render loading message if subproducts data is not available
   if (!subproducts) {
     return <div>Loading...</div>;
   }
 
   return (
     <div className="subproduct-section">
+      {/* Subproducts header */}
       <div className="subproduct-header">
         <h5 className="subproduct-title">Select subproducts</h5>
+        {/* Button to toggle visibility of subproducts */}
         <span className="minimize-btn" onClick={toggleSubproductVisibility}>
           {showSubproducts ? (
             <img src="icons/subprod-collapse.png" alt="collapse icon" />
@@ -69,8 +74,10 @@ export default function Subproducts({ subCategoryId, checkedSubcategories }) {
           )}
         </span>
       </div>
+      {/* Display subproducts if showSubproducts is true */}
       {showSubproducts && (
         <div className="subproduct-list">
+          {/* Search bar */}
           <input
             className="search-bar"
             type="text"
@@ -78,6 +85,7 @@ export default function Subproducts({ subCategoryId, checkedSubcategories }) {
             value={searchText}
             onChange={(e) => setSearchText(e.target.value)}
           />
+          {/* List of subproducts */}
           {subproducts
             .filter((subproduct) => subproduct.subCategoryId === subCategoryId)
             .filter((subproduct) =>
@@ -87,8 +95,10 @@ export default function Subproducts({ subCategoryId, checkedSubcategories }) {
             )
             .map((subproduct) => (
               <div className="subproduct-menu" key={subproduct.subProductId}>
+                {/* Subproduct item */}
                 <div className="subproduct-item">
                   <label>{subproduct.subProductName}</label>
+                  {/* Checkbox to select subproduct */}
                   <input
                     type="checkbox"
                     checked={
@@ -103,6 +113,7 @@ export default function Subproducts({ subCategoryId, checkedSubcategories }) {
             ))}
         </div>
       )}
+      {/* Button to add selected subproducts */}
       {showSubproducts && (
         <div className="product-btn">
           <button className="btn">Add Subproduct</button>

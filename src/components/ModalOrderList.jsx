@@ -6,7 +6,9 @@ import { useProductsData } from "../hooks/useProductsData";
 // Import CSS
 import "./ModalOrderList.css";
 
+// Component for displaying the modal order list
 export default function ModalOrderList({ closeOrder }) {
+  // Retrieve products, subcategories, subproducts, saveOrderData, isLoading, and error from the useProductsData hook
   const {
     products,
     subcategories,
@@ -16,7 +18,7 @@ export default function ModalOrderList({ closeOrder }) {
     error,
   } = useProductsData();
 
-  // Retrieve checked products, subcategories, and subproducts using context hook
+  // Retrieve checked products, subcategories, subproducts, and resetState function using the useCheckedProducts hook
   const {
     checkedProducts,
     checkedSubcategories,
@@ -26,7 +28,6 @@ export default function ModalOrderList({ closeOrder }) {
 
   // State variables to store modal display data
   const [modalProducts, setModalProducts] = useState([]);
-
   const [modalSubcategories, setModalSubcategories] = useState([]);
   const [modalSubproducts, setModalSubproducts] = useState([]);
 
@@ -70,14 +71,17 @@ export default function ModalOrderList({ closeOrder }) {
     };
   }, [closeOrder]);
 
+  // Display loading message while fetching data
   if (isLoading) {
     return <div>Loading...</div>;
   }
 
+  // Display error message if an error occurs during data fetching
   if (error) {
     return <div>Error: {error}</div>;
   }
 
+  // Function to save order data and reset state
   const saveOrder = () => {
     // Convert array data to objects with indices as keys
     const productsObj = modalProducts.reduce((obj, product, index) => {
@@ -105,9 +109,10 @@ export default function ModalOrderList({ closeOrder }) {
       subproducts: subproductsObj,
     };
 
-    // Call the function from your hook to save order data
+    // Call the saveOrderData function to save order data
     saveOrderData(orderData);
 
+    // Reset state
     resetState();
 
     // Close the modal
@@ -116,16 +121,22 @@ export default function ModalOrderList({ closeOrder }) {
     console.log("Order data saved:", orderData);
   };
 
+  // Function to clear order and reset state
   const clearOrder = () => {
+    // Reset state
     resetState();
+
+    // Close the modal
+    closeOrder();
   };
 
   return (
+    // Modal container
     <div className="modal">
       <div className="modal-content">
+        {/* Display selected products */}
         <div className="modal-products">
           <h4>Products:</h4>
-          {/* Display added products */}
           {modalProducts.length > 0 ? (
             modalProducts.map((productName, index) => (
               <p key={index}>{productName}</p>
@@ -134,9 +145,9 @@ export default function ModalOrderList({ closeOrder }) {
             <p>No products selected</p>
           )}
         </div>
+        {/* Display selected subcategories */}
         <div className="modal-subcategories">
           <h4>SubCategories:</h4>
-          {/* Display added subcategories */}
           {modalSubcategories.length > 0 ? (
             modalSubcategories.map((subcategory, index) => (
               <p key={index}>{subcategory}</p>
@@ -145,9 +156,9 @@ export default function ModalOrderList({ closeOrder }) {
             <p>No sub-categories selected</p>
           )}
         </div>
+        {/* Display selected subproducts */}
         <div className="modal-subproducts">
           <h4>SubProducts:</h4>
-          {/* Display added subproducts */}
           {modalSubproducts.length > 0 ? (
             modalSubproducts.map((subProductName, index) => (
               <p key={index}>{subProductName}</p>
@@ -156,6 +167,7 @@ export default function ModalOrderList({ closeOrder }) {
             <p>No sub-products selected</p>
           )}
         </div>
+        {/* Buttons for clearing or saving order */}
         <div className="order-btns">
           <div className="modal-btn">
             <button className="clear btn" onClick={clearOrder}>
