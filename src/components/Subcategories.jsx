@@ -4,7 +4,7 @@ import { useCheckedProducts } from "../context/CheckedProductsContext";
 import { useProductsData } from "../hooks/useProductsData";
 import "./Subcategories.css";
 
-export default function Subcategories({ productId, productSelectionState }) {
+export default function Subcategories({ productId }) {
   const { subcategories } = useProductsData();
   // Access checked subcategories and setCheckedSubcategories function from context
   const { checkedSubcategories, setCheckedSubcategories } =
