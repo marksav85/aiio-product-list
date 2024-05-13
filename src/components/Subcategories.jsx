@@ -125,10 +125,12 @@ export default function Subcategories({ productId, productSelectionState }) {
             ))}
         </div>
       )}
-      {/* Button to add selected subcategories */}
+      {/* Button to create new Subcategory. Currently disabled. */}
       {showSubcategories && (
         <div className="product-btn">
-          <button className="btn">Add Subcategory</button>
+          <button className="btn" disabled>
+            Add Subcategory
+          </button>
         </div>
       )}
     </div>
