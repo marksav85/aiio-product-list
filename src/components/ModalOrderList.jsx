@@ -40,6 +40,8 @@ export default function ModalOrderList() {
     if (checkedProducts && products) {
       setModalProducts(checkedProducts.map((product) => product.productName));
     }
+    console.log("checkedProducts", checkedProducts);
+    console.log("modalProducts", modalProducts);
   }, [checkedProducts, products]);
 
   useEffect(() => {
@@ -48,6 +50,7 @@ export default function ModalOrderList() {
         checkedSubcategories.map((subcategory) => subcategory.subCategoryName)
       );
     }
+    console.log("checkedSubcategories", checkedSubcategories);
   }, [checkedSubcategories, subcategories]);
 
   useEffect(() => {
@@ -56,6 +59,7 @@ export default function ModalOrderList() {
         checkedSubproducts.map((subproduct) => subproduct.subProductName)
       );
     }
+    console.log("checkedSubproducts", checkedSubproducts);
   }, [checkedSubproducts, subproducts]);
 
   // Close modal when clicking outside
@@ -87,30 +91,30 @@ export default function ModalOrderList() {
 
   // Function to save order data and reset state
   const saveOrder = () => {
-    // Convert array data to objects with indices as keys
-    const productsObj = modalProducts.reduce((obj, product, index) => {
-      obj[index + 1] = product;
-      return obj;
-    }, {});
+    // Convert checked products, subcategories, and subproducts to arrays of objects
 
-    const subcategoriesObj = modalSubcategories.reduce(
-      (obj, subcategory, index) => {
-        obj[index + 1] = subcategory;
-        return obj;
-      },
-      {}
-    );
+    const productsArray = checkedProducts.map((product) => ({
+      productId: product.productId,
+      productName: product.productName,
+    }));
 
-    const subproductsObj = modalSubproducts.reduce((obj, subproduct, index) => {
-      obj[index + 1] = subproduct;
-      return obj;
-    }, {});
+    console.log(productsArray);
+
+    const subcategoriesArray = checkedSubcategories.map((subcategory) => ({
+      subcategoryId: subcategory.subCategoryId,
+      subcategoryName: subcategory.subCategoryName,
+    }));
+
+    const subproductsArray = checkedSubproducts.map((subproducts) => ({
+      subproductsId: subproducts.subProductId,
+      subproductsName: subproducts.subProductName,
+    }));
 
     // Construct the orderData object with the converted data
     const orderData = {
-      products: productsObj,
-      subcategories: subcategoriesObj,
-      subproducts: subproductsObj,
+      products: productsArray,
+      subcategories: subcategoriesArray,
+      subproducts: subproductsArray,
     };
 
     // Call the saveOrderData function to save order data
