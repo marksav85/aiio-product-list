@@ -6,8 +6,10 @@ import "./Products.css";
 
 // Component for displaying products and their associated subcategories
 export default function Products() {
-  // Fetch products data using custom hook
-  const { products, isLoading, error } = useProductsData();
+  // Fetch products data using context hook
+  const { products } = useCheckedProducts();
+  // Fetch loading and error states using custom hook
+  const { isLoading, error } = useProductsData();
   // Access checked products, subcategories and subproducts from context
   const { checkedProducts, setCheckedProducts } = useCheckedProducts();
   const { checkedSubcategories, setCheckedSubcategories } =

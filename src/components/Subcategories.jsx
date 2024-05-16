@@ -1,11 +1,10 @@
 import { useState } from "react";
 import Subproducts from "./Subproducts";
 import { useCheckedProducts } from "../context/CheckedProductsContext";
-import { useProductsData } from "../hooks/useProductsData";
 import "./Subcategories.css";
 
 export default function Subcategories({ productId }) {
-  const { subcategories } = useProductsData();
+  const { subcategories } = useCheckedProducts();
   // Access checked subcategories and setCheckedSubcategories function from context
   const { checkedSubcategories, setCheckedSubcategories } =
     useCheckedProducts();
