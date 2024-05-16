@@ -40,8 +40,6 @@ export default function ModalOrderList() {
     if (checkedProducts && products) {
       setModalProducts(checkedProducts.map((product) => product.productName));
     }
-    console.log("checkedProducts", checkedProducts);
-    console.log("modalProducts", modalProducts);
   }, [checkedProducts, products]);
 
   useEffect(() => {
@@ -50,7 +48,6 @@ export default function ModalOrderList() {
         checkedSubcategories.map((subcategory) => subcategory.subCategoryName)
       );
     }
-    console.log("checkedSubcategories", checkedSubcategories);
   }, [checkedSubcategories, subcategories]);
 
   useEffect(() => {
@@ -59,10 +56,9 @@ export default function ModalOrderList() {
         checkedSubproducts.map((subproduct) => subproduct.subProductName)
       );
     }
-    console.log("checkedSubproducts", checkedSubproducts);
   }, [checkedSubproducts, subproducts]);
 
-  // Close modal when clicking outside
+  // Close modal when clicking outside the modal
   useEffect(() => {
     const handleClickOutside = (event) => {
       const modal = document.querySelector(".modal");
@@ -70,7 +66,7 @@ export default function ModalOrderList() {
         // Prevent the default behavior of the click event
         event.preventDefault();
         event.stopPropagation();
-        toggleOrderList(); // Close the modal when clicking outside
+        toggleOrderList();
       }
     };
     document.addEventListener("click", handleClickOutside, true);
@@ -91,14 +87,10 @@ export default function ModalOrderList() {
 
   // Function to save order data and reset state
   const saveOrder = () => {
-    // Convert checked products, subcategories, and subproducts to arrays of objects
-
     const productsArray = checkedProducts.map((product) => ({
       productId: product.productId,
       productName: product.productName,
     }));
-
-    console.log(productsArray);
 
     const subcategoriesArray = checkedSubcategories.map((subcategory) => ({
       subcategoryId: subcategory.subCategoryId,
@@ -110,7 +102,7 @@ export default function ModalOrderList() {
       subproductsName: subproducts.subProductName,
     }));
 
-    // Construct the orderData object with the converted data
+    // Construct the orderData object
     const orderData = {
       products: productsArray,
       subcategories: subcategoriesArray,
