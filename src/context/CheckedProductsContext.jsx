@@ -12,12 +12,32 @@ export const CheckedProductsProvider = ({ children }) => {
   const [checkedProducts, setCheckedProducts] = useState([]);
   const [checkedSubcategories, setCheckedSubcategories] = useState([]);
   const [checkedSubproducts, setCheckedSubproducts] = useState([]);
+  // State variables to manage the visibility of the new product modal and order list
   const [newProductVisible, setNewProductVisible] = useState(false);
   const [orderVisible, setOrderVisible] = useState(false);
+  // State variables to store products, subcategories, and subproducts data
+  const [products, setProducts] = useState([]);
+  const [subcategories, setSubcategories] = useState([]);
+  const [subproducts, setSubproducts] = useState([]);
 
   // Function to update state and replace existing data with new data
   const updateStateAndReplaceData = (setter, newData) => {
     setter(newData);
+  };
+
+  // Function to update products data
+  const updateProducts = (data) => {
+    setProducts(data);
+  };
+
+  // Function to update subcategories data
+  const updateSubcategories = (data) => {
+    setSubcategories(data);
+  };
+
+  // Function to update subproducts data
+  const updateSubproducts = (data) => {
+    setSubproducts(data);
   };
 
   // Function to reset state variables to empty arrays
@@ -27,10 +47,12 @@ export const CheckedProductsProvider = ({ children }) => {
     setCheckedSubproducts([]);
   };
 
+  // Function to toggle the visibility of the new product modal
   const toggleNewProduct = () => {
     setNewProductVisible(!newProductVisible);
   };
 
+  // Function to toggle the visibility of the order list
   const toggleOrderList = () => {
     setOrderVisible(!orderVisible);
   };
@@ -53,6 +75,12 @@ export const CheckedProductsProvider = ({ children }) => {
         newProductVisible,
         toggleOrderList,
         orderVisible,
+        products,
+        subcategories,
+        subproducts,
+        updateProducts,
+        updateSubcategories,
+        updateSubproducts,
       }}
     >
       {children}
