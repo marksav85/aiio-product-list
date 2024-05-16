@@ -8,14 +8,13 @@ import "./Products.css";
 export default function Products() {
   // Fetch products data using custom hook
   const { products, isLoading, error } = useProductsData();
-  // Access checked products and setCheckedProducts function from context
+  // Access checked products, subcategories and subproducts from context
   const { checkedProducts, setCheckedProducts } = useCheckedProducts();
-  // State variable to store IDs of checked products
-  const [checkedProductIds, setCheckedProductIds] = useState([]);
   const { checkedSubcategories, setCheckedSubcategories } =
     useCheckedProducts();
   const { checkedSubproducts, setCheckedSubproducts } = useCheckedProducts();
-  const [productSelectionState, setProductSelectionState] = useState({});
+  // State variable to store IDs of checked products
+  const [checkedProductIds, setCheckedProductIds] = useState([]);
 
   // Function to handle changes in product selection
   const handleProductChange = (productId) => {
@@ -119,10 +118,7 @@ export default function Products() {
                 />
               </div>
               {checkedProductIds[product.productId] && (
-                <Subcategories
-                  productId={product.productId}
-                  productSelectionState={productSelectionState}
-                />
+                <Subcategories productId={product.productId} />
               )}
             </div>
           ))}
