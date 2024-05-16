@@ -4,7 +4,6 @@ import { useCheckedProducts } from "../context/CheckedProductsContext";
 // Custom hook to fetch products, subcategories, and subproducts data
 export const useProductsData = () => {
   // State variables to store fetched data
-
   const { updateProducts } = useCheckedProducts();
   const { updateSubcategories } = useCheckedProducts();
   const { updateSubproducts } = useCheckedProducts();
