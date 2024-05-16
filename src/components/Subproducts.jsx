@@ -1,22 +1,25 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useCheckedProducts } from "../context/CheckedProductsContext";
-import { useProductsData } from "../hooks/useProductsData";
 import "./Subproducts.css";
 
 export default function Subproducts({ subCategoryId }) {
-  const { subproducts } = useProductsData();
+  const { subproducts } = useCheckedProducts();
   // Access checked subproducts and setCheckedSubproducts function from context
   const { checkedSubproducts, setCheckedSubproducts } = useCheckedProducts();
   const [checkedSubproductIds, setCheckedSubproductIds] = useState({});
+  // State variable to store the search text
   const [searchText, setSearchText] = useState("");
+  // State variable to manage the visibility of subproducts
   const [showSubproducts, setShowSubproducts] = useState(true);
+  // Access toggleNewProduct function from context
   const { toggleNewProduct } = useCheckedProducts();
 
+  // Function to toggle the visibility of subproducts
   const toggleSubproductVisibility = () => {
     setShowSubproducts(!showSubproducts);
   };
 
-  // Function to handle changes in subproduct selection
+  // Function to handle changes in the checkbox state
   const handleSubproductChange = (subProductId) => {
     const isChecked = checkedSubproductIds[subProductId]; // Get the current checked state of the checkbox
 
@@ -51,10 +54,6 @@ export default function Subproducts({ subCategoryId }) {
     });
   };
 
-  useEffect(() => {
-    console.log("checked Subproducts", checkedSubproducts);
-  }, [checkedSubproducts, subproducts]);
-
   // Render loading message if subproducts data is not available
   if (!subproducts) {
     return <div>Loading...</div>;
@@ -86,6 +85,7 @@ export default function Subproducts({ subCategoryId }) {
             onChange={(e) => setSearchText(e.target.value)}
           />
           {/* List of subproducts */}
+
           {subproducts
             .filter((subproduct) => subproduct.subCategoryId === subCategoryId)
             .filter((subproduct) =>
@@ -113,10 +113,15 @@ export default function Subproducts({ subCategoryId }) {
             ))}
         </div>
       )}
-      {/* Button to add selected subproducts */}
+      {/* Button to toggle ModalNewProduct */}
       {showSubproducts && (
         <div className="product-btn">
-          <button className="btn" onClick={toggleNewProduct}>
+          <button
+            className="btn"
+            onClick={() => {
+              toggleNewProduct(subCategoryId);
+            }}
+          >
             Add Subproduct
           </button>
         </div>
