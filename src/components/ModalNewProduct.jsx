@@ -4,15 +4,19 @@ import { useProductsData } from "../hooks/useProductsData";
 import { useCheckedProducts } from "../context/CheckedProductsContext";
 
 export default function ModalNewProduct() {
-  const { createSubProduct, subproducts } = useProductsData();
-  const { newProductVisible } = useCheckedProducts();
-  const { toggleNewProduct } = useCheckedProducts();
+  // Access createSubProduct function from context
+  const { createSubProduct } = useProductsData();
+  // Access subproducts state from context
+  const { subproducts } = useCheckedProducts();
+  // Access newProductVisible, newSubproductCatId, and toggleNewProduct function from context
+  const { newProductVisible, newSubproductCatId, toggleNewProduct } =
+    useCheckedProducts();
   // State variable to store the value of the new subproduct
-  const [subProduct, setSubProduct] = useState("");
+  const [newSubproduct, setNewSubproduct] = useState("");
 
   // Handler function to update the value of the new subproduct
   const handleSubProductChange = (event) => {
-    setSubProduct(event.target.value);
+    setNewSubproduct(event.target.value);
   };
 
   // Handler function to submit the new subproduct
@@ -26,20 +30,21 @@ export default function ModalNewProduct() {
     // Construct the data for the new subproduct
     const subProductData = {
       subProductId: nextSubProductId,
-      subProductName: subProduct,
-      subCategoryId: 10, // Example subcategory ID
+      subProductName: newSubproduct,
+      subCategoryId: newSubproductCatId, // new subcategory ID
     };
 
     // Call the function to create the new subproduct
     createSubProduct(subProductData);
 
     // Clear the input field after submission
-    setSubProduct("");
+    setNewSubproduct("");
 
+    // Close the modal after submission
     toggleNewProduct();
   };
 
-  // Close modal when clicking outside
+  // Close modal when clicking outside the modal
   useEffect(() => {
     const handleClickOutside = (event) => {
       const modal = document.querySelector(".modal");
@@ -47,7 +52,7 @@ export default function ModalNewProduct() {
         // Prevent the default behavior of the click event
         event.preventDefault();
         event.stopPropagation();
-        toggleNewProduct(); // Close the modal when clicking outside
+        toggleNewProduct();
       }
     };
     document.addEventListener("click", handleClickOutside, true);
@@ -61,6 +66,7 @@ export default function ModalNewProduct() {
       {newProductVisible && (
         <div className="modal new-product">
           <div className="modal-content new-product-content">
+            {/* Close button */}
             <div className="np-close-btn">
               <button onClick={toggleNewProduct}>X</button>
             </div>
@@ -74,11 +80,12 @@ export default function ModalNewProduct() {
                 {/* Input field for entering the new subproduct */}
                 <input
                   type="text"
-                  value={subProduct}
+                  value={newSubproduct}
                   onChange={handleSubProductChange}
                   required
                 />
               </label>
+              {/* Button to submit form */}
               <div className="order-btns">
                 <div className="modal-btn">
                   <button className="close btn" type="submit">
