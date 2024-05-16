@@ -19,6 +19,8 @@ export const CheckedProductsProvider = ({ children }) => {
   const [products, setProducts] = useState([]);
   const [subcategories, setSubcategories] = useState([]);
   const [subproducts, setSubproducts] = useState([]);
+  // CategoryId for new subproduct
+  const [newSubproductCatId, setNewSubproductCatId] = useState(null);
 
   // Function to update state and replace existing data with new data
   const updateStateAndReplaceData = (setter, newData) => {
@@ -48,8 +50,9 @@ export const CheckedProductsProvider = ({ children }) => {
   };
 
   // Function to toggle the visibility of the new product modal
-  const toggleNewProduct = () => {
+  const toggleNewProduct = (id) => {
     setNewProductVisible(!newProductVisible);
+    setNewSubproductCatId(id);
   };
 
   // Function to toggle the visibility of the order list
@@ -81,6 +84,7 @@ export const CheckedProductsProvider = ({ children }) => {
         updateProducts,
         updateSubcategories,
         updateSubproducts,
+        newSubproductCatId,
       }}
     >
       {children}
