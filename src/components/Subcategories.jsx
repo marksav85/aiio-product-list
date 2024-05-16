@@ -10,16 +10,19 @@ export default function Subcategories({ productId }) {
   const { checkedSubcategories, setCheckedSubcategories } =
     useCheckedProducts();
   const { checkedSubproducts, setCheckedSubproducts } = useCheckedProducts();
-
+  // State variable to store the checked state of subcategories
   const [checkedCategoryIds, setCheckedCategoryIds] = useState({});
+  // State variable to store the search text
   const [searchText, setSearchText] = useState("");
+  // State variable to manage the visibility of subcategories
   const [showSubcategories, setShowSubcategories] = useState(true);
 
+  // Function to toggle the visibility of subcategories
   const toggleSubcategoryVisibility = () => {
     setShowSubcategories(!showSubcategories);
   };
 
-  // Function to handle changes in subcategory selection
+  // Function to handle changes in the checkbox state
   const handleCategoryChange = (subCategoryId) => {
     const isChecked = checkedCategoryIds[subCategoryId]; // Get the current checked state of the checkbox
 
