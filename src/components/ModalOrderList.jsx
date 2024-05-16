@@ -9,14 +9,10 @@ import "./ModalOrderList.css";
 // Component for displaying the modal order list
 export default function ModalOrderList() {
   // Retrieve products, subcategories, subproducts, saveOrderData, isLoading, and error from the useProductsData hook
-  const {
-    products,
-    subcategories,
-    subproducts,
-    saveOrderData,
-    isLoading,
-    error,
-  } = useProductsData();
+  const { saveOrderData, isLoading, error } = useProductsData();
+
+  // Retrieve products, subcategories, and subproducts from the useCheckedProducts hook
+  const { products, subcategories, subproducts } = useCheckedProducts();
 
   // Retrieve checked products, subcategories, subproducts, and resetState function using the useCheckedProducts hook
   const {
