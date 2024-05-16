@@ -74,6 +74,7 @@ export const useProductsData = () => {
         ...prevSubproducts,
         newSubProduct,
       ]);
+      console.log("Subproduct added successfully:", newSubProduct);
     } catch (error) {
       console.error("Error adding subproduct:", error.message);
     }
