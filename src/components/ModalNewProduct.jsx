@@ -31,11 +31,12 @@ export default function ModalNewProduct() {
     const subProductData = {
       subProductId: nextSubProductId,
       subProductName: newSubproduct,
-      subCategoryId: newSubproductCatId, // new subcategory ID
+      subCategoryId: newSubproductCatId, // subcategory ID of added subproduct
     };
 
     // Call the function to create the new subproduct
     createSubProduct(subProductData);
+    console.log(subProductData);
 
     // Clear the input field after submission
     setNewSubproduct("");
