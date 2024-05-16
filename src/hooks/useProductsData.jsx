@@ -1,65 +1,61 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
+import { useCheckedProducts } from "../context/CheckedProductsContext";
 
 // Custom hook to fetch products, subcategories, and subproducts data
 export const useProductsData = () => {
   // State variables to store fetched data
-  const [products, setProducts] = useState([]);
-  const [subcategories, setSubcategories] = useState([]);
-  const [subproducts, setSubproducts] = useState([]);
+
+  const { updateProducts } = useCheckedProducts();
+  const { updateSubcategories } = useCheckedProducts();
+  const { updateSubproducts } = useCheckedProducts();
 
   // State variables to handle loading and error states
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Effect hook to fetch data from the server when the component mounts
-  useEffect(() => {
-    // Function to fetch data asynchronously
-    const fetchData = async () => {
-      try {
-        // Fetch products data
-        const productsRes = await fetch("http://localhost:8000/products/");
-        if (!productsRes.ok) {
-          throw new Error("Failed to fetch products");
-        }
-        const productsData = await productsRes.json();
-        // console.log("Products Data:", productsData);
-        setProducts(productsData);
-
-        // Fetch subcategories data
-        const subcategoriesRes = await fetch(
-          "http://localhost:8000/subcategories/"
-        );
-        if (!subcategoriesRes.ok) {
-          throw new Error("Failed to fetch subcategories");
-        }
-        const subcategoriesData = await subcategoriesRes.json();
-        // console.log("Subcategories Data:", subcategoriesData);
-        setSubcategories(subcategoriesData);
-
-        // Fetch subproducts data
-        const subproductsRes = await fetch(
-          "http://localhost:8000/subproducts/"
-        );
-        if (!subproductsRes.ok) {
-          throw new Error("Failed to fetch subproducts");
-        }
-        const subproductsData = await subproductsRes.json();
-        // console.log("Subproducts Data:", subproductsData);
-        setSubproducts(subproductsData);
-
-        // Update loading and error states
-        setIsLoading(false);
-        setError(null);
-      } catch (error) {
-        // Set error state if fetching data fails
-        setError(error.message);
-        setIsLoading(false);
+  // Function to fetch data asynchronously
+  const fetchData = useCallback(async () => {
+    try {
+      // Fetch products data
+      const productsRes = await fetch("http://localhost:8000/products/");
+      if (!productsRes.ok) {
+        throw new Error("Failed to fetch products");
       }
-    };
+      const productsData = await productsRes.json();
+      updateProducts(productsData);
 
-    // Call the fetchData function
-    fetchData();
+      // Fetch subcategories data
+      const subcategoriesRes = await fetch(
+        "http://localhost:8000/subcategories/"
+      );
+      if (!subcategoriesRes.ok) {
+        throw new Error("Failed to fetch subcategories");
+      }
+      const subcategoriesData = await subcategoriesRes.json();
+      updateSubcategories(subcategoriesData);
+
+      // Fetch subproducts data
+      const subproductsRes = await fetch("http://localhost:8000/subproducts/");
+      if (!subproductsRes.ok) {
+        throw new Error("Failed to fetch subproducts");
+      }
+      const subproductsData = await subproductsRes.json();
+      updateSubproducts(subproductsData);
+
+      // Update loading and error states
+      setIsLoading(false);
+      setError(null);
+    } catch (error) {
+      // Set error state if fetching data fails
+      setError(error.message);
+      setIsLoading(false);
+    }
   }, []);
+
+  // Call the fetchData function when the component mounts
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
 
   // Function to add a new subproduct
   const createSubProduct = async (subProductData) => {
@@ -75,7 +71,10 @@ export const useProductsData = () => {
         throw new Error("Failed to add subproduct", subProductData);
       }
       const newSubProduct = await response.json();
-      setSubproducts([...subproducts, newSubProduct]); // Update subproducts state with the newly added subproduct
+      updateSubproducts((prevSubproducts) => [
+        ...prevSubproducts,
+        newSubProduct,
+      ]);
     } catch (error) {
       console.error("Error adding subproduct:", error.message);
     }
@@ -102,9 +101,6 @@ export const useProductsData = () => {
 
   // Return the state variables and functions to be used by components
   return {
-    products,
-    subcategories,
-    subproducts,
     isLoading,
     error,
     createSubProduct,
